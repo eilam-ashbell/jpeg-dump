@@ -8,7 +8,7 @@ async function extractMarkers(
     try {
         // Read the marker map JSON file
         const markerMap = (await readJsonAsObj(
-            "./src/markers.json"
+            "./src/dictionaries/markers.json"
         )) as MarkersDictModel;
         const markers: MarkersModel = {};
 
