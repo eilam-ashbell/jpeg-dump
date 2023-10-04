@@ -1,6 +1,6 @@
-import MarkersModel from "./models/markers.model";
-import MarkersDictModel from "./models/markers-dict.model";
-import { createUniqueObjKey, readJsonAsObj } from "./utils";
+import MarkersModel from "../models/markers.model";
+import MarkersDictModel from "../models/markers-dict.model";
+import { createUniqueObjKey, readJsonAsObj } from "../utils";
 
 async function extractMarkers(
     hexValues: Uint8Array
