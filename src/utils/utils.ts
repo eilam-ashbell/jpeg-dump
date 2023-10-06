@@ -38,4 +38,24 @@ function createUniqueObjKey(object: Object, key: string) {
     return newKey;
 }
 
-export { readImageAsHex, readJsonAsObj, createUniqueObjKey };
+function formatHexZeros(hexValue: string): string {
+    // Remove any leading "0x" if present
+    hexValue = hexValue.replace(/^0x/, "");
+
+    // Count the number of leading zeros
+    let leadingZerosCount = 0;
+    while (hexValue.charAt(leadingZerosCount) === "0") {
+        leadingZerosCount++;
+    }
+
+    if (leadingZerosCount % 2 === 0) {
+        // Remove the leading zeros, leaving at least one
+        hexValue = hexValue.substring(leadingZerosCount);
+    } else {
+        hexValue = hexValue.substring(leadingZerosCount - 1);
+    }
+
+    return hexValue;
+}
+
+export { readImageAsHex, readJsonAsObj, createUniqueObjKey, formatHexZeros };

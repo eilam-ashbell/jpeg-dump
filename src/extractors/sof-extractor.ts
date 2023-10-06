@@ -1,12 +1,11 @@
+import markersDict from "../dictionaries/markersDict";
 import MarkersDictModel from "../models/markers-dict.model";
 import SofModel from "../models/sof.model";
-import { readJsonAsObj } from "../utils";
+import { readJsonAsObj } from "../utils/utils";
 
 async function extractSof(sofSegment: Uint8Array): Promise<SofModel> {
     // Read the marker map JSON file
-    const markerMap = (await readJsonAsObj(
-        "./src/dictionaries/markers.json"
-    )) as MarkersDictModel;
+    const markerMap = markersDict;
     // parse segment data
     const sofData = new SofModel();
     sofData.marker = ((sofSegment[0] << 8) | sofSegment[1]).toString(16);

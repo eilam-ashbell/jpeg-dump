@@ -1,6 +1,9 @@
-import {ExifBaseTagModel} from "./models/EXIF-tag.model";
-import { IBytesOrder } from "./models/IBytesOrder";
-import ExifIfdDataModel from "./models/exif-ifd-data.model";
+import dataTypesDict from "../dictionaries/dataTypesDict";
+import dataTypes from "../dictionaries/dataTypesDict";
+import exifTagsDict from "../dictionaries/exifTagsDict";
+import { ExifBaseTagModel } from "../models/exif-tag.model";
+import { IBytesOrder } from "../models/IBytesOrder";
+import ExifIfdDataModel from "../models/exif-ifd-data.model";
 
 function extractApp1Identifier(app1Segment: Uint8Array): string {
     // Check if the APP1 marker is correct (0xFFE1)
@@ -147,10 +150,15 @@ function ifdDataToTags(ifdData: ExifIfdDataModel): {
     const tagsMarkers = ifdData.ifdRawData.slice(2, ifdData.tagsEndOffset);
     const tags = splitUnit8ArrayToTags(tagsMarkers);
     const tagsModel = {};
+    let tagCount = 1;
     for (const tag of tags) {
-        const tagModel = unit8ArrayToExifTag(tag);
+        const tagModel = unit8ArrayToExifTag(tag);        
+        tagModel.order = tagCount;
+        tagCount++;
         tagsModel[tagModel.tagId] = tagModel;
     }
+    // console.log(tagsModel);
+
     return tagsModel;
 }
 
@@ -159,8 +167,7 @@ function unit8ArrayToExifTag(unit8Array: Uint8Array): ExifBaseTagModel {
         throw new Error(
             `Invalid unit8Array length. This array has ${unit8Array.length} bytes, and tag needs to be 12 bytes `
         );
-    }
-
+    }    
     const exifTag = new ExifBaseTagModel();
     (exifTag.tagId = ((unit8Array[1] << 8) | unit8Array[0])
         .toString(16)
@@ -168,18 +175,91 @@ function unit8ArrayToExifTag(unit8Array: Uint8Array): ExifBaseTagModel {
         (exifTag.dataType = ((unit8Array[3] << 8) | unit8Array[2])
             .toString(16)
             .padStart(4, "0")),
-        (exifTag.valueCount = (
+        (exifTag.valueCount =
             (unit8Array[7] << 24) |
             (unit8Array[6] << 16) |
             (unit8Array[5] << 8) |
-            unit8Array[4]
-        )
-            .toString(16)
-            .padStart(8, "0")),
-        (exifTag.value = Array.from(unit8Array.slice(-4).reverse(), (byte) =>
+            unit8Array[4]),
+        (exifTag.rawValue = Array.from(unit8Array.slice(-4).reverse(), (byte) =>
             byte.toString(16).padStart(2, "0")
         ).join(""));
     return exifTag;
+}
+
+function hexToReadable(dataTypeNumber: number, hexValue: string): string {
+    const dataTypeInfo = dataTypesDict[dataTypeNumber];
+
+    if (!dataTypeInfo) {
+        return "Unsupported data type";
+    }
+
+    const hexPairs: string[] = [];
+    for (let i = 0; i < hexValue.length; i += 2) {
+        hexPairs.push(hexValue.substr(i, 2));
+    }
+    // const hexPairs = hexValue.match(/.{2}/g);
+
+    // if (!hexPairs || hexPairs.length !== dataTypeInfo.length) {
+    //     return "Invalid hex data length";
+    // }
+
+    const hexValues = hexPairs.map((hexPair) => parseInt(hexPair, 16));
+
+    switch (dataTypeNumber) {
+        case 1: // unsignedByte
+        case 6: // signedByte
+        case 7: // undefined
+            return hexValues[0].toString();
+
+        case 2: // asciiStrings
+            return String.fromCharCode(...hexValues);
+
+        case 3: // unsignedShort
+        case 8: // signedShort
+            return ((hexValues[0] << 8) | hexValues[1]).toString();
+
+        case 4: // unsignedLong
+        case 9: // signedLong
+            return (
+                (hexValues[0] << 24) |
+                (hexValues[1] << 16) |
+                (hexValues[2] << 8) |
+                hexValues[3]
+            ).toString();
+
+        case 5: // unsignedRational
+        case 10: // signedRational
+            const numerator =
+                (hexValues[0] << 24) |
+                (hexValues[1] << 16) |
+                (hexValues[2] << 8) |
+                hexValues[3];
+            const denominator =
+                (hexValues[4] << 24) |
+                (hexValues[5] << 16) |
+                (hexValues[6] << 8) |
+                hexValues[7];
+            return `${numerator}/${denominator}`;
+
+        case 11: // singleFloat
+            const singleFloatBuffer = new ArrayBuffer(4);
+            const singleFloatView = new DataView(singleFloatBuffer);
+            hexValues.forEach((value, index) =>
+                singleFloatView.setUint8(index, value)
+            );
+            return singleFloatView.getFloat32(0).toString();
+
+        case 12: // doubleFloat
+            const doubleFloatBuffer = new ArrayBuffer(8);
+            const doubleFloatView = new DataView(doubleFloatBuffer);
+            hexValues.forEach((value, index) =>
+                doubleFloatView.setUint8(index, value)
+            );
+            return doubleFloatView.getFloat64(0).toString();
+
+        default:
+            return "Unknown data type";
+    }
 }
 
 export {
@@ -192,6 +272,7 @@ export {
     splitUnit8ArrayToTags,
     ifdDataToTags,
     unit8ArrayToExifTag,
+    hexToReadable,
 };
 
 // slice tags from IFD data

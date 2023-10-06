@@ -1,15 +1,13 @@
 import MarkersModel from "../models/markers.model";
-import MarkersDictModel from "../models/markers-dict.model";
-import { createUniqueObjKey, readJsonAsObj } from "../utils";
+import { createUniqueObjKey } from "../utils/utils";
+import markersDict from "../dictionaries/markersDict";
 
 async function extractMarkers(
     hexValues: Uint8Array
 ): Promise<MarkersModel | undefined> {
     try {
         // Read the marker map JSON file
-        const markerMap = (await readJsonAsObj(
-            "./src/dictionaries/markers.json"
-        )) as MarkersDictModel;
+        const markerMap = markersDict;
         const markers: MarkersModel = {};
 
         let currentIndex = 0;
