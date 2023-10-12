@@ -1603,9 +1603,9 @@ const exifTagsDict: {
         tagName: "ExposureMode",
         dataType: 3,
         values: {
-            "0": "Auto ",
-            "1": "Manual ",
-            "2": "Auto bracket",
+            0: "Auto",
+            1: "Manual",
+            2: "Auto bracket",
         },
     },
     a403: {

@@ -1,10 +1,10 @@
 import markersDict from "../dictionaries/markersDict";
-import MarkersDictModel from "../models/markers-dict.model";
+import SegmentModel from "../models/Segment.model";
+import SOFTypeModel from "../models/sof-type.model";
 import SofModel from "../models/sof.model";
-import { readJsonAsObj } from "../utils/utils";
 
-async function extractSof(sofSegment: Uint8Array): Promise<SofModel> {
-    // Read the marker map JSON file
+function extractSof(sofSegment: Uint8Array): SofModel {
+    // Read the marker map
     const markerMap = markersDict;
     // parse segment data
     const sofData = new SofModel();
@@ -21,4 +21,20 @@ async function extractSof(sofSegment: Uint8Array): Promise<SofModel> {
     return sofData;
 }
 
-export { extractSof };
+function extractSOFType(structure: SegmentModel): SOFTypeModel {
+    // Read the marker map
+    const markerMap = markersDict;
+    // extract SOF in image
+    const SOF = Object.keys(structure).filter((k) => k.startsWith("SOF"))[0];
+    // get SOF raw data
+    const SOFData = structure[SOF].rawData as Uint8Array;
+    // extract marker
+    const SOFmarker = ((SOFData[0] << 8) | SOFData[1]).toString(16);
+    return {
+        marker: SOFmarker,
+        name: markersDict[`0x${SOFmarker}`].name,
+        details: markersDict[`0x${SOFmarker}`].details,
+    };
+}
+
+export { extractSof, extractSOFType };

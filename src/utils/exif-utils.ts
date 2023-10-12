@@ -4,6 +4,13 @@ import exifTagsDict from "../dictionaries/exifTagsDict";
 import { ExifBaseTagModel } from "../models/exif-tag.model";
 import { IBytesOrder } from "../models/IBytesOrder";
 import ExifIfdDataModel from "../models/exif-ifd-data.model";
+import {
+    splitArrayIntoChunks,
+    trimTrailingZeros,
+    uint8ArrayToHexString,
+    uint8ArrayToNumberBE,
+    uint8ArrayToNumberLE,
+} from "./utils";
 
 function extractApp1Identifier(app1Segment: Uint8Array): string {
     // Check if the APP1 marker is correct (0xFFE1)
@@ -100,20 +107,15 @@ function extractIFD(
     const tagsCount =
         (app1Segment[IFDOffset - bytesOrderFlag] << 8) |
         app1Segment[IFDOffset + 1 + bytesOrderFlag];
-    // console.log('tagsCount: ' + tagsCount);
 
     // calculate where tags structure ends
     const endOfTagsOffset = IFDOffset + tagsCount * 12 + 2;
-    // console.log('endOfTagsOffset: ' + endOfTagsOffset);
 
     const nextIFDOffset =
         (app1Segment[endOfTagsOffset - bytesOrderFlag * 3] << 24) |
         (app1Segment[endOfTagsOffset + 1 - bytesOrderFlag] << 16) |
         (app1Segment[endOfTagsOffset + 2 + bytesOrderFlag] << 8) |
         app1Segment[endOfTagsOffset + 3 + bytesOrderFlag * 3];
-
-    // console.log('nextIFDOffset: ' + nextIFDOffset);
-    // console.log('app1Segment: ' + app1Segment.length);
 
     // slice IFD data from segment
     const IFDRawData = app1Segment.slice(
@@ -124,7 +126,8 @@ function extractIFD(
         IFDRawData,
         tagsCount,
         endOfTagsOffset - IFDOffset,
-        nextIFDOffset
+        nextIFDOffset,
+        IFDOffset
     ); // normalizing endOfTagsOffset to start of IFD
 }
 
@@ -150,14 +153,14 @@ function ifdDataToTags(ifdData: ExifIfdDataModel): {
     const tagsMarkers = ifdData.ifdRawData.slice(2, ifdData.tagsEndOffset);
     const tags = splitUnit8ArrayToTags(tagsMarkers);
     const tagsModel = {};
-    let tagCount = 1;
+    let tagCount = 0;
     for (const tag of tags) {
-        const tagModel = unit8ArrayToExifTag(tag);        
+        const tagModel = unit8ArrayToExifTag(tag);
         tagModel.order = tagCount;
+        tagModel.offset = 2 + ifdData.offset + tagCount * 12; // offset from start of segment | 2 to skip number of tags | ifdData.offset from TIFF | tagCount * 12 to keep tracking by order
         tagCount++;
         tagsModel[tagModel.tagId] = tagModel;
     }
-    // console.log(tagsModel);
 
     return tagsModel;
 }
@@ -167,7 +170,7 @@ function unit8ArrayToExifTag(unit8Array: Uint8Array): ExifBaseTagModel {
         throw new Error(
             `Invalid unit8Array length. This array has ${unit8Array.length} bytes, and tag needs to be 12 bytes `
         );
-    }    
+    }
     const exifTag = new ExifBaseTagModel();
     (exifTag.tagId = ((unit8Array[1] << 8) | unit8Array[0])
         .toString(16)
@@ -180,71 +183,72 @@ function unit8ArrayToExifTag(unit8Array: Uint8Array): ExifBaseTagModel {
             (unit8Array[6] << 16) |
             (unit8Array[5] << 8) |
             unit8Array[4]),
-        (exifTag.rawValue = Array.from(unit8Array.slice(-4).reverse(), (byte) =>
+        (exifTag.tagValue = Array.from(unit8Array.slice(-4).reverse(), (byte) =>
             byte.toString(16).padStart(2, "0")
         ).join(""));
+    exifTag.offset = 1;
     return exifTag;
 }
 
-function hexToReadable(dataTypeNumber: number, hexValue: string): string {
+function hexToReadable(
+    tagId: string,
+    dataTypeNumber: number,
+    hexValue: Uint8Array
+): string | number {
     const dataTypeInfo = dataTypesDict[dataTypeNumber];
 
     if (!dataTypeInfo) {
         return "Unsupported data type";
     }
-
-    const hexPairs: string[] = [];
-    for (let i = 0; i < hexValue.length; i += 2) {
-        hexPairs.push(hexValue.substr(i, 2));
-    }
-    // const hexPairs = hexValue.match(/.{2}/g);
-
-    // if (!hexPairs || hexPairs.length !== dataTypeInfo.length) {
-    //     return "Invalid hex data length";
+    const data = hexValue;
+    // const hexPairs: string[] = [];
+    // for (let i = 0; i < hexValue.length; i += 2) {
+    //     hexPairs.push(hexValue.substr(i, 2));
     // }
 
-    const hexValues = hexPairs.map((hexPair) => parseInt(hexPair, 16));
+    // const hexValues = hexPairs.map((hexPair) => parseInt(hexPair, 16));
+
+    // const hexValues = hexValue.map( (byte) => byte.toString(16).padStart(2, "0"));
 
     switch (dataTypeNumber) {
         case 1: // unsignedByte
         case 6: // signedByte
+            return Number(data[0]);
         case 7: // undefined
-            return hexValues[0].toString();
-
         case 2: // asciiStrings
-            return String.fromCharCode(...hexValues);
+            return String.fromCharCode(...trimTrailingZeros(hexValue));
 
         case 3: // unsignedShort
-        case 8: // signedShort
-            return ((hexValues[0] << 8) | hexValues[1]).toString();
+        case 8: // signedShort    
+            return uint8ArrayToNumberLE(hexValue);
 
         case 4: // unsignedLong
         case 9: // signedLong
-            return (
-                (hexValues[0] << 24) |
-                (hexValues[1] << 16) |
-                (hexValues[2] << 8) |
-                hexValues[3]
-            ).toString();
+            return uint8ArrayToNumberLE(hexValue);
 
         case 5: // unsignedRational
         case 10: // signedRational
-            const numerator =
-                (hexValues[0] << 24) |
-                (hexValues[1] << 16) |
-                (hexValues[2] << 8) |
-                hexValues[3];
-            const denominator =
-                (hexValues[4] << 24) |
-                (hexValues[5] << 16) |
-                (hexValues[6] << 8) |
-                hexValues[7];
-            return `${numerator}/${denominator}`;
+            const elements = splitArrayIntoChunks(hexValue, 4);
+            const numerator = uint8ArrayToNumberLE(elements[0]);
+            const denominator = uint8ArrayToNumberLE(elements[1]);
+
+            // const numerator =
+            //     (hexValues[0] << 24) |
+            //     (hexValues[1] << 16) |
+            //     (hexValues[2] << 8) |
+            //     hexValues[3];
+            // const denominator =
+            //     (hexValues[4] << 24) |
+            //     (hexValues[5] << 16) |
+            //     (hexValues[6] << 8) |
+            //     hexValues[7];
+            return (numerator / denominator).toString();
+        // return `${numerator}/${denominator}`;
 
         case 11: // singleFloat
             const singleFloatBuffer = new ArrayBuffer(4);
             const singleFloatView = new DataView(singleFloatBuffer);
-            hexValues.forEach((value, index) =>
+            hexValue.forEach((value, index) =>
                 singleFloatView.setUint8(index, value)
             );
             return singleFloatView.getFloat32(0).toString();
@@ -252,7 +256,7 @@ function hexToReadable(dataTypeNumber: number, hexValue: string): string {
         case 12: // doubleFloat
             const doubleFloatBuffer = new ArrayBuffer(8);
             const doubleFloatView = new DataView(doubleFloatBuffer);
-            hexValues.forEach((value, index) =>
+            hexValue.forEach((value, index) =>
                 doubleFloatView.setUint8(index, value)
             );
             return doubleFloatView.getFloat64(0).toString();
@@ -274,34 +278,3 @@ export {
     unit8ArrayToExifTag,
     hexToReadable,
 };
-
-// slice tags from IFD data
-// const tagsRawData = IFDRawData.slice(2);
-
-// const tagTest: EXIFTagModel[] = tags.map((tag) => unit8ArrayToExifTag(tag));
-// console.log(tagTest);
-
-// find the next IFD offset
-
-// let tagsCounter = 0;
-// const tagsObj: Record<
-//     string,
-//     { tagID: number; type: number; count: number; value: number }
-// > = {};
-// while (tagsCounter < tags) {
-//     const tag: {tagID:number, type: number, count:number, value: number} = {
-//         tagID: ((app1Segment[startOffset + (tagsCounter * 12)] << 8) | app1Segment[startOffset + (tagsCounter * 12) + 1]),
-//         type: ((app1Segment[startOffset + (tagsCounter * 12) + 2] << 8) | app1Segment[startOffset + (tagsCounter * 12) + 3]),
-//         count: app1Segment[startOffset + (tagsCounter * 12) + 4] +
-//         app1Segment[startOffset + (tagsCounter * 12) + 5] +
-//         app1Segment[startOffset + (tagsCounter * 12) + 6] +
-//         app1Segment[startOffset + (tagsCounter * 12) + 7],
-//         value: app1Segment[startOffset + (tagsCounter * 12) + 8] +
-//         app1Segment[startOffset + (tagsCounter * 12) + 9] +
-//         app1Segment[startOffset + (tagsCounter * 12) + 10] +
-//         app1Segment[startOffset + (tagsCounter * 12) + 11],
-//     }
-// tagsObj[tag.tagID] = tag
-// tagsCounter++;
-// }
-// console.log(tagsObj);

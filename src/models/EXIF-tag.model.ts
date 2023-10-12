@@ -1,23 +1,27 @@
 import dataTypesDict from "../dictionaries/dataTypesDict";
 import exifTagsDict from "../dictionaries/exifTagsDict";
 import { hexToReadable } from "../utils/exif-utils";
+import { hexStringToUint8Array } from "../utils/utils";
 
 export class ExifBaseTagModel {
     "tagId": string;
     "dataType": string;
     "valueCount": number;
-    "rawValue": string;
+    "tagValue": string;
     "order": number;
+    "offset": number;
 }
 
 export class ExifExtendedTagModel extends ExifBaseTagModel {
     "tagName": string;
     // "ifd": string;
     "tagDescription": string;
+    "dataTypeAsInt": number;
     "dataTypeInBytes": number;
     "dataTypeName": string;
     "isValueAtOffset": boolean;
-    "parsedValue": string;
+    "rawValue": Uint8Array;
+    "parsedValue": string | number;
     "valuesDict": { [key: string]: string } | null;
 
     constructor(exifTag: ExifBaseTagModel) {
@@ -25,21 +29,21 @@ export class ExifExtendedTagModel extends ExifBaseTagModel {
         this.tagId = exifTag.tagId;
         // this.ifd = exifTagsDict[exifTag.tagId]?.ifd
         this.dataType = exifTag.dataType;
+        this.dataTypeAsInt = parseInt(exifTag.dataType, 16);
         this.valueCount = exifTag.valueCount;
-        this.rawValue = exifTag.rawValue;
+        this.tagValue = exifTag.tagValue;
         this.order = exifTag.order;
+        this.offset = exifTag.offset;
         this.tagName = exifTagsDict[exifTag.tagId]?.tagName;
         // this.tagDescription = exifTagsDict[exifTag.tagId].tagDescription;
-        this.dataTypeInBytes =
-            dataTypesDict[Number(exifTag.dataType)].length || null;
-        this.dataTypeName = dataTypesDict[Number(exifTag.dataType)].name;
+        this.dataTypeInBytes = dataTypesDict[this.dataTypeAsInt].length || null;
+        this.dataTypeName = dataTypesDict[this.dataTypeAsInt].name;
         this.isValueAtOffset = this.dataTypeInBytes
             ? this.dataTypeInBytes * this.valueCount > 4
             : true;
-        this.parsedValue = hexToReadable(
-            Number(exifTag.dataType),
-            this.rawValue
-        );
+        this.rawValue = hexStringToUint8Array(this.tagValue).reverse();
+        // todo - data conversion not good
+        this.parsedValue = hexToReadable(this.tagId, this.dataTypeAsInt, this.rawValue);
         this.valuesDict = exifTagsDict[exifTag.tagId]?.values;
     }
 }

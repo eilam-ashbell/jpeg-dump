@@ -1,6 +1,6 @@
-import DQTModel, { DQT } from "../models/dqt.model";
+import DQTModel, { IDQT } from "../models/dqt.model";
 
-function extractDqtSegment(dqtSegment: Uint8Array): Record<string, any> {
+function extractDqtSegment(dqtSegment: Uint8Array): DQTModel {
     // Check if the DQT marker is correct (0xFFDB)
     if (dqtSegment[0] !== 0xff || dqtSegment[1] !== 0xdb) {
         throw new Error("Invalid DQT marker");
@@ -9,7 +9,7 @@ function extractDqtSegment(dqtSegment: Uint8Array): Record<string, any> {
     const dataLength = (dqtSegment[2] << 8) | dqtSegment[3];
     const segmentData = dqtSegment.subarray(4, dataLength + 2);
 
-    const quantizationTables: DQT = {};
+    const quantizationTables: IDQT = {};
 
     let offset = 0;
 
@@ -39,7 +39,7 @@ function extractDqtSegment(dqtSegment: Uint8Array): Record<string, any> {
         };
     }
 
-    return new DQTModel("0xFFDB", dataLength, quantizationTables);
+    return new DQTModel("0xffdb", dataLength, quantizationTables);
 }
 
 export { extractDqtSegment };

@@ -1,14 +1,12 @@
-import MarkersModel from "../models/markers.model";
+import SegmentModel from "../models/Segment.model";
 import { createUniqueObjKey } from "../utils/utils";
 import markersDict from "../dictionaries/markersDict";
 
-async function extractMarkers(
-    hexValues: Uint8Array
-): Promise<MarkersModel | undefined> {
+function parseSegments(hexValues: Uint8Array): SegmentModel | undefined {
     try {
         // Read the marker map JSON file
         const markerMap = markersDict;
-        const markers: MarkersModel = {};
+        const markers: SegmentModel = {};
 
         let currentIndex = 0;
 
@@ -38,9 +36,12 @@ async function extractMarkers(
                         );
                         markers[markerUniqKey] = {
                             marker: markerKey,
-                            offset: `0x${markerStart.toString(16)}`,
+                            offset: markerStart,
                             length: 0,
-                            rawData: null,
+                            rawData: hexValues.slice(
+                                currentIndex - 1,
+                                currentIndex + 1
+                            ),
                         };
                     } else {
                         // extract segment length
@@ -54,7 +55,7 @@ async function extractMarkers(
                         const offsetHex = `${lengthByte1}${lengthByte2}`;
 
                         // extract nested segments
-                        const nestedSegments = await extractMarkers(
+                        const nested = parseSegments(
                             hexValues.slice(
                                 currentIndex + 1,
                                 startIndex + parseInt(offsetHex, 16) + 2
@@ -65,17 +66,16 @@ async function extractMarkers(
                             markers,
                             markerMap[markerKey].name
                         );
-                        // console.log(markerUniqKey);
                         markers[markerUniqKey] = {
                             marker: markerKey,
-                            offset: `0x${markerStart.toString(16)}`,
+                            offset: markerStart,
                             length: parseInt(offsetHex, 16),
                             // save as Unit8Array
                             rawData: hexValues.slice(
                                 currentIndex - 1,
                                 startIndex + parseInt(offsetHex, 16) + 2
                             ),
-                            nestedSegments: nestedSegments,
+                            nested: nested,
                             // save as hex string
                             // rawData: Array.from(
                             //     hexValues.slice(
@@ -94,10 +94,24 @@ async function extractMarkers(
             }
             currentIndex++;
         }
+        // search for trailer data
+        const lastMarker = Object.keys(markers).pop();
+        if (
+            lastMarker === "EOI" &&
+            markers[lastMarker].offset + 2 !== hexValues.length
+        ) {
+            const trailerData = hexValues.slice(markers[lastMarker].offset + 2);
+            markers["TRLR"] = {
+                marker: null,
+                offset: markers[lastMarker].offset + 2,
+                length: trailerData.length,
+                rawData: trailerData,
+            };
+        }
         return Object.keys(markers).length === 0 ? undefined : markers;
     } catch (error) {
         throw new Error(`Error reading the image file: ${error}`);
     }
 }
 
-export { extractMarkers };
+export { parseSegments };
