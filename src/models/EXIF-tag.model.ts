@@ -24,7 +24,7 @@ export class ExifExtendedTagModel extends ExifBaseTagModel {
     "parsedValue": string | number;
     "valuesDict": { [key: string]: string } | null;
 
-    constructor(exifTag: ExifBaseTagModel) {
+    constructor(exifTag: ExifBaseTagModel, tagGroup: string) {
         super();
         this.tagId = exifTag.tagId;
         // this.ifd = exifTagsDict[exifTag.tagId]?.ifd
@@ -34,7 +34,7 @@ export class ExifExtendedTagModel extends ExifBaseTagModel {
         this.tagValue = exifTag.tagValue;
         this.order = exifTag.order;
         this.offset = exifTag.offset;
-        this.tagName = exifTagsDict[exifTag.tagId]?.tagName;
+        this.tagName = exifTagsDict[tagGroup][exifTag.tagId]?.tagName;
         // this.tagDescription = exifTagsDict[exifTag.tagId].tagDescription;
         this.dataTypeInBytes = dataTypesDict[this.dataTypeAsInt].length || null;
         this.dataTypeName = dataTypesDict[this.dataTypeAsInt].name;
@@ -42,9 +42,9 @@ export class ExifExtendedTagModel extends ExifBaseTagModel {
             ? this.dataTypeInBytes * this.valueCount > 4
             : true;
         this.rawValue = hexStringToUint8Array(this.tagValue).reverse();
-        // todo - data conversion not good
-        this.parsedValue = hexToReadable(this.tagId, this.dataTypeAsInt, this.rawValue);
-        this.valuesDict = exifTagsDict[exifTag.tagId]?.values;
+        this.parsedValue = hexToReadable(this.tagId, this.dataTypeAsInt,  this.valueCount, this.rawValue);
+        this.valuesDict = exifTagsDict[tagGroup][exifTag.tagId]?.values;
+        this.tagDescription = exifTagsDict[tagGroup][exifTag.tagId]?.description;
     }
 }
 
@@ -56,4 +56,12 @@ export class ExifTagDictModel {
     "values": {
         [key: string]: string;
     } | null;
+    "description"?: string;
+}
+
+export interface ITIFFParser {
+    'parsedTags': {[ifd: string]: {
+        [key: string]: ExifExtendedTagModel | ExifBaseTagModel;
+    }}
+    'thumb': Uint8Array
 }

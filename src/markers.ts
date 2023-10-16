@@ -9,12 +9,12 @@ export default class Markers {
     }
 
     // get a list of all main markers by their order on image
-    get listMain() {
+    get listMain(): string[] {
         return Object.keys(this.structureData);
     }
 
     // get a list of all markers by their order on image
-    get listAll() {
+    get listAll(): string[] {
         const markersList: string[] = [];
         Object.keys(this.structureData).forEach((key, i) => {
             markersList.push(key);
@@ -30,7 +30,7 @@ export default class Markers {
     }
 
     // get a list of all markers of thumbnail image by their order on image
-    get listThumbnail() {
+    get listThumbnail(): string[] {
         const markersList: string[] = [];
         Object.keys(this.structureData).forEach((key, i) => {
             if (this.structureData[key].nested) {
@@ -45,7 +45,12 @@ export default class Markers {
     }
 
     // get all markers in images with their offset an relation to other markers
-    get tree() {
+    get tree(): {
+        [key: string]: {
+            offset: number;
+            nested?: { [key: string]: { offset: number } };
+        };
+    } {
         const markers = {};
         Object.keys(this.structureData).forEach((key, i) => {
             // if there are nested segments, parse the and insert to object
@@ -75,7 +80,7 @@ export default class Markers {
     }
 
     // get a list of all metadata markers by their order on image
-    get listMetadata() {
+    get listMetadata(): string[] {
         const regexApps = /\bAPP/g;
         return Object.keys(this.structureData).filter(
             (marker) =>

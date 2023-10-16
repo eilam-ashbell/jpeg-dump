@@ -1,5 +1,5 @@
 import SegmentModel from "../models/Segment.model";
-import { createUniqueObjKey } from "../utils/utils";
+import { createUniqueObjKey, keyExists } from "../utils/utils";
 import markersDict from "../dictionaries/markersDict";
 
 function parseSegments(hexValues: Uint8Array): SegmentModel | undefined {
@@ -18,10 +18,15 @@ function parseSegments(hexValues: Uint8Array): SegmentModel | undefined {
 
                 // Check for the second byte of the marker
                 if (hexValues[currentIndex] !== 0x00) {
-                    // Valid marker found
+                    // fetch marker
                     const markerKey = `0xff${hexValues[currentIndex].toString(
                         16
                     )}`;
+                    // check if its a known one from the markers dictionary
+                    const isKnownMarker = keyExists(markerMap, markerKey);   
+
+                    // if not a known marker - skip it.
+                    if (!isKnownMarker) return;
 
                     // if marker have no length
                     if (
@@ -32,7 +37,7 @@ function parseSegments(hexValues: Uint8Array): SegmentModel | undefined {
                     ) {
                         let markerUniqKey = createUniqueObjKey(
                             markers,
-                            markerMap[markerKey].name
+                            markerMap[markerKey]?.name
                         );
                         markers[markerUniqKey] = {
                             marker: markerKey,

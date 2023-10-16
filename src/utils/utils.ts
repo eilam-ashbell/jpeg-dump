@@ -32,7 +32,7 @@ function createUniqueObjKey(object: Object, key: string) {
 
     // Check if the key already exists in the object
     while (object.hasOwnProperty(newKey)) {
-        newKey = `${key}_${counter}`; // Append a number to the key
+        newKey = `${key}${counter}`; // Append a number to the key
         counter++;
     }
     return newKey;
@@ -127,6 +127,15 @@ function trimTrailingZeros(uint8Array: Uint8Array) {
     return uint8Array.slice(0, endIndex);
 }
 
+function keyExists(obj: { [key: string]: any }, value: any): boolean {
+    for (const key in obj) {                
+      if (key === value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 export {
     readImageAsHex,
     readJsonAsObj,
@@ -137,5 +146,6 @@ export {
     splitArrayIntoChunks,
     uint8ArrayToNumberLE,
     uint8ArrayToNumberBE,
-    trimTrailingZeros
+    trimTrailingZeros,
+    keyExists
 };

@@ -193,6 +193,7 @@ function unit8ArrayToExifTag(unit8Array: Uint8Array): ExifBaseTagModel {
 function hexToReadable(
     tagId: string,
     dataTypeNumber: number,
+    valueCount: number,
     hexValue: Uint8Array
 ): string | number {
     const dataTypeInfo = dataTypesDict[dataTypeNumber];
@@ -212,6 +213,13 @@ function hexToReadable(
 
     switch (dataTypeNumber) {
         case 1: // unsignedByte
+            if (valueCount !== 1) {
+                let parsedValue = "";
+                for (let i = 0; i < valueCount; i++) {
+                    parsedValue += data[i].toString();
+                }
+                return parsedValue;
+            }
         case 6: // signedByte
             return Number(data[0]);
         case 7: // undefined
@@ -219,7 +227,7 @@ function hexToReadable(
             return String.fromCharCode(...trimTrailingZeros(hexValue));
 
         case 3: // unsignedShort
-        case 8: // signedShort    
+        case 8: // signedShort
             return uint8ArrayToNumberLE(hexValue);
 
         case 4: // unsignedLong

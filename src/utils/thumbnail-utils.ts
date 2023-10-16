@@ -13,7 +13,7 @@ function saveUint8ArrayAsFile(uint8Array: Uint8Array, filePath: string) {
         // Close the stream to finish writing
         writeStream.end();
 
-        console.log(`File "${filePath}" saved successfully.`);
+        // console.log(`File "${filePath}" saved successfully.`);
     } catch (error) {
         console.error(`Error saving file "${filePath}":`, error);
     }

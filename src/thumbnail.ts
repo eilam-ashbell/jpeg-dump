@@ -1,5 +1,8 @@
+import Compression from "./compression";
 import Jpeg from "./jpeg";
+import Metadata from "./metadata";
 import SegmentModel from "./models/Segment.model";
+import Structure from "./structure";
 import { saveUint8ArrayAsFile } from "./utils/thumbnail-utils";
 
 export default class Thumbnail {
@@ -18,34 +21,13 @@ export default class Thumbnail {
         this.compression = this.jpeg?.compression;
     }
 
-    public structure;
+    public structure: Structure;
 
-    public metadata;
+    public metadata: Metadata;
 
-    public compression;
+    public compression: Compression;
 
-    // todo - enable saving thumbnail image as separate file
-    public save(path: string) {
-        // const segments = Object.keys(this.structure.dump);
-        // console.log(segments);
-        // const fileLength = segments.reduce(
-        //     (length, chunk) =>
-        //         length + this.structure.dump[chunk].rawData.length,
-        //     0
-        // );
-        // console.log(fileLength);
-
-        // let thumbData = new Uint8Array(fileLength);
-        // let offset = 0;
-        // segments.forEach((chunk) => {
-        //     thumbData.set(this.structure.dump[chunk].rawData, offset);
-        //     offset += this.structure.dump[chunk].rawData.length;
-        // });
-        // // console.log('start: ' + );
-        // console.log(thumbData);
-
-        // // console.log(new Jpeg('./thumb.jpeg').structure.dump);
-
-        saveUint8ArrayAsFile(this.thumbnail as Uint8Array, "./thumb.jpg");
+    public save(path?: string): void {
+        saveUint8ArrayAsFile(this.thumbnail as Uint8Array, path || './thumbnail.jpg');
     }
 }

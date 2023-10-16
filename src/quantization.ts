@@ -10,7 +10,7 @@ export default class Quantization {
         this.structure = structure;
     }
 
-    public parse() {
+    public parse(): { [DQTName: string]: DQTModel } {
         // find all DQT markers in image
         const DQTMarkers = Object.keys(this.structure).filter((key) =>
             key.startsWith("DQT")

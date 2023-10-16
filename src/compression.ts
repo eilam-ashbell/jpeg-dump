@@ -10,6 +10,6 @@ export default class Compression {
         this.quantization = new Quantization(structure);
         this.frame = new Frame(structure)
     }
-    public quantization;
-    public frame;
+    public quantization: Quantization;
+    public frame: Frame;
 }
