@@ -372,6 +372,10 @@ function TIFFParser(app1Segment: Uint8Array): ITIFFParser {
             parsedTags[key] = tagsInXMP;
         }
         // todo TAG_MAKERNOTE   = 0x927C
+        if (tagsInIFD["927C"]) {
+            console.log('MakerNotes');
+            
+        }
         // todo InteropOffset = 0xa005
         // todo TAG_USERCOMMENT = 0x928
 

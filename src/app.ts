@@ -35,7 +35,7 @@ const imageMetadataThumbnailMetadataJFIF = () => {
     console.log(image.metadata.thumbnail.metadata.JFIF());
 };
 const imageMetadataThumbnailSave = () => {
-    console.log(image.metadata.thumbnail.save("./testThumbnail.jpeg"));
+    console.log(image.metadata.thumbnail.save("./thumbnail.jpeg"));
 };
 const imageMetadataThumbnailStructureDump = () => {
     console.log(image.metadata.thumbnail.structure.dump);
@@ -129,6 +129,7 @@ const imageMetadataIFDTags = (IFD: string) => {
 const imagePath = "./img/IMG_3391.JPG";
 // const imagePath = "./img/SamsungDigimaxS800.jpg";
 
+const start = new Date().getTime();
 const image = new Jpeg(imagePath);
 
 // imageDump()
@@ -155,6 +156,9 @@ const image = new Jpeg(imagePath);
 // imageStructureMarkersMetadata()
 // imageStructureMarkersThumbnail()
 // imageStructureMarkersTree()
-// imageMetadataTags('parsedValue', )
-imageMetadataIFDsList();
+imageMetadataTags('rawValue' , '927c')
+// imageMetadataIFDsList();
 // imageMetadataIFDTags('IFD')
+
+const end = new Date().getTime();
+console.log(`process duration: ${end-start}ms`);
