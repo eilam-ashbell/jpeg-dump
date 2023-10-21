@@ -35,8 +35,7 @@ export class ExifExtendedTagModel extends ExifBaseTagModel {
         this.order = exifTag.order;
         this.offset = exifTag.offset;
         this.tagName = exifTagsDict[tagGroup][exifTag.tagId]?.tagName;
-        // this.tagDescription = exifTagsDict[exifTag.tagId].tagDescription;
-        this.dataTypeInBytes = dataTypesDict[this.dataTypeAsInt].length || null;
+        this.dataTypeInBytes = dataTypesDict[this.dataTypeAsInt].length || 0;
         this.dataTypeName = dataTypesDict[this.dataTypeAsInt].name;
         this.isValueAtOffset = this.dataTypeInBytes
             ? this.dataTypeInBytes * this.valueCount > 4
@@ -44,7 +43,7 @@ export class ExifExtendedTagModel extends ExifBaseTagModel {
         this.rawValue = hexStringToUint8Array(this.tagValue).reverse();
         this.parsedValue = hexToReadable(this.tagId, this.dataTypeAsInt,  this.valueCount, this.rawValue);
         this.valuesDict = exifTagsDict[tagGroup][exifTag.tagId]?.values;
-        this.tagDescription = exifTagsDict[tagGroup][exifTag.tagId]?.description;
+        this.tagDescription = exifTagsDict[tagGroup][exifTag.tagId]?.description || '';
     }
 }
 

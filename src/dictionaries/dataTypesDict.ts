@@ -1,4 +1,4 @@
-const dataTypesDict = {
+const dataTypesDict: { [key: number]: { name: string; length: number } } = {
     1: { name: "unsignedByte", length: 1 },
     2: { name: "asciiStrings", length: 1 },
     3: { name: "unsignedShort", length: 2 },

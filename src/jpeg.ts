@@ -32,7 +32,7 @@ export default class Jpeg {
                 this.metadata = new Metadata(this.structure.dump);
                 this.compression = new Compression(this.structure.dump);
             } else {
-                throw new error("structure object is undefined");
+                throw new Error("structure object is undefined");
             }
         } else {
             throw new Error("Invalid input type");
@@ -44,7 +44,7 @@ export default class Jpeg {
                 this.metadata = new Metadata(this.structure.dump);
                 this.compression = new Compression(this.structure.dump);
             } else {
-                throw new error("structure object is undefined");
+                throw new Error("structure object is undefined");
             }
         }
     }

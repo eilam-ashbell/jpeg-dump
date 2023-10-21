@@ -152,7 +152,7 @@ function ifdDataToTags(ifdData: ExifIfdDataModel): {
 } {
     const tagsMarkers = ifdData.ifdRawData.slice(2, ifdData.tagsEndOffset);
     const tags = splitUnit8ArrayToTags(tagsMarkers);
-    const tagsModel = {};
+    const tagsModel: { [key: string]: any } = {};
     let tagCount = 0;
     for (const tag of tags) {
         const tagModel = unit8ArrayToExifTag(tag);

@@ -26,7 +26,7 @@ export default class Metadata {
     };
     public JFIF(): App0JFIFModel | App0JFXXModel {
         if (!this.structureData["APP0"]) {
-            throw new error("no JFIF metadata found");
+            throw new Error("no JFIF metadata found");
         }
         return extractApp0(this.structureData["APP0"]?.rawData as Uint8Array);
     }
@@ -36,7 +36,7 @@ export default class Metadata {
         };
     } {
         if (!this.structureData["APP1"]) {
-            throw new error("no EXIF metadata found");
+            throw new Error("no EXIF metadata found");
         }
         const exifTags = TIFFParser(
             this.structureData["APP1"]?.rawData as Uint8Array

@@ -86,7 +86,7 @@ function uint8ArrayToHexString(uint8Array: Uint8Array): string {
     return hexArray.join("");
 }
 
-function splitArrayIntoChunks(arr: any[] | Uint8Array, chunkSize: number) {
+function splitArrayIntoChunks(arr: any[] | Uint8Array, chunkSize: number): any[] {
     const result: any[] = [];
     for (let i = 0; i < arr?.length; i += chunkSize) {
         result.push(arr.slice(i, i + chunkSize));
@@ -95,7 +95,7 @@ function splitArrayIntoChunks(arr: any[] | Uint8Array, chunkSize: number) {
 }
 
 // Little-Endian Byte Order (LSB first)
-function uint8ArrayToNumberLE(uint8Array) {
+function uint8ArrayToNumberLE(uint8Array: Uint8Array): number {
     let result = 0;
     for (let i = 0; i < uint8Array?.length; i++) {
         result += uint8Array[i] << (8 * i);
@@ -104,7 +104,7 @@ function uint8ArrayToNumberLE(uint8Array) {
 }
 
 // Big-Endian Byte Order (MSB first)
-function uint8ArrayToNumberBE(uint8Array) {
+function uint8ArrayToNumberBE(uint8Array: Uint8Array): number {
     let result = 0;
     for (let i = uint8Array.length - 1; i >= 0; i--) {
         result += uint8Array[i] << (8 * (uint8Array.length - 1 - i));
@@ -112,7 +112,7 @@ function uint8ArrayToNumberBE(uint8Array) {
     return result;
 }
 
-function trimTrailingZeros(uint8Array: Uint8Array) {
+function trimTrailingZeros(uint8Array: Uint8Array): Uint8Array {
     let endIndex = uint8Array.length;
     
     // Find the index of the first non-zero byte from the end

@@ -236,7 +236,7 @@ function TIFFParser(app1Segment: Uint8Array): ITIFFParser {
             [key: string]: ExifExtendedTagModel | ExifBaseTagModel;
         };
     } = {};
-    const thumb = {};
+    const thumb: {'data': Uint8Array} = {'data': new Uint8Array(0)};
 
     while (nextIFDOffset) {
         // get IFD data

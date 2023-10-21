@@ -51,14 +51,14 @@ export default class Markers {
             nested?: { [key: string]: { offset: number } };
         };
     } {
-        const markers = {};
+        const markers: { [key: string]: any } = {};
         Object.keys(this.structureData).forEach((key, i) => {
             // if there are nested segments, parse the and insert to object
             if (this.structureData[key].nested) {
                 const nested = Object.keys(
                     this.structureData[key].nested as SegmentModel
                 );
-                const nestedMarkers = {};
+                const nestedMarkers: { [key: string]: any } = {};
                 nested.forEach(
                     (nestedKey) =>
                         (nestedMarkers[nestedKey] = {
