@@ -1,4 +1,4 @@
-import { ExifBaseTagModel, ExifExtendedTagModel, ITIFFParser } from "../models/exif-tag.model";
+import { ExifBaseTagModel, ExifExtendedTagModel, ITIFFParser } from "../models/EXIF-tag.model";
 import { App0JFIFModel, App0JFXXModel } from "../models/app0.model";
 declare function extractApp0(app0Segment: Uint8Array): App0JFIFModel | App0JFXXModel;
 declare function extractExifTags(app1Segment: Uint8Array): {

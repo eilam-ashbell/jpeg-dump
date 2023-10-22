@@ -1,4 +1,4 @@
-import { ExifTagDictModel } from "../models/exif-tag.model";
+import { ExifTagDictModel } from "../models/EXIF-tag.model";
 
 // Sources:
 // https://exiftool.org/TagNames/EXIF.html

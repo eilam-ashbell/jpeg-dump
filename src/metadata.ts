@@ -3,7 +3,7 @@ import { extractApp0, TIFFParser } from "./extractors/metadata-extractors";
 import {
     ExifBaseTagModel,
     ExifExtendedTagModel,
-} from "./models/exif-tag.model";
+} from "./models/EXIF-tag.model";
 import SegmentModel from "./models/Segment.model";
 import Thumbnail from "./thumbnail";
 import { App0JFIFModel, App0JFXXModel } from "./models/app0.model";

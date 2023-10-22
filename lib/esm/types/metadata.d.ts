@@ -1,4 +1,4 @@
-import { ExifBaseTagModel, ExifExtendedTagModel } from "./models/exif-tag.model";
+import { ExifBaseTagModel, ExifExtendedTagModel } from "./models/EXIF-tag.model";
 import SegmentModel from "./models/Segment.model";
 import Thumbnail from "./thumbnail";
 import { App0JFIFModel, App0JFXXModel } from "./models/app0.model";

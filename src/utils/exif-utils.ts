@@ -1,14 +1,10 @@
 import dataTypesDict from "../dictionaries/dataTypesDict";
-import dataTypes from "../dictionaries/dataTypesDict";
-import exifTagsDict from "../dictionaries/exifTagsDict";
-import { ExifBaseTagModel } from "../models/exif-tag.model";
+import { ExifBaseTagModel } from "../models/EXIF-tag.model";
 import { IBytesOrder } from "../models/IBytesOrder";
 import ExifIfdDataModel from "../models/exif-ifd-data.model";
 import {
     splitArrayIntoChunks,
     trimTrailingZeros,
-    uint8ArrayToHexString,
-    uint8ArrayToNumberBE,
     uint8ArrayToNumberLE,
 } from "./utils";
 

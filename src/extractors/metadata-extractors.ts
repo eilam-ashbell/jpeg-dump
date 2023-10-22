@@ -14,7 +14,7 @@ import {
     ExifBaseTagModel,
     ExifExtendedTagModel,
     ITIFFParser,
-} from "../models/exif-tag.model";
+} from "../models/EXIF-tag.model";
 import { App0JFIFModel, App0JFXXModel } from "../models/app0.model";
 import App1EXIFModel from "../models/app1.model";
 import ExifIfdDataModel from "../models/exif-ifd-data.model";

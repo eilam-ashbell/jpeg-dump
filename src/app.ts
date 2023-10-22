@@ -1,5 +1,5 @@
 import Jpeg from "./jpeg";
-import { ExifExtendedTagModel } from "./models/exif-tag.model";
+import { ExifExtendedTagModel } from "./models/EXIF-tag.model";
 
 const imageDump = () => {
     console.log(image.dump);
