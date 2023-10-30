@@ -1,5 +1,5 @@
 {
-    "name": "jpegger",
+    "name": "jpeg-dump",
     "version": "1.0.0",
     "description": "A deep dive into JPEG file structure",
     "main": "./lib/cjs/index.js",

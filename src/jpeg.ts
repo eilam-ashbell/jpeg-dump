@@ -1,11 +1,7 @@
 import fs from "fs";
-import { parseSegments } from "./extractors/parseSegments";
-import segments from "./structure";
 import Structure from "./structure";
 import Metadata from "./metadata";
-import SegmentModel from "./models/Segment.model";
 import Compression from "./compression";
-import { error } from "console";
 
 /**
  * Jpeg class will externalize every pice of data in a JPEG file

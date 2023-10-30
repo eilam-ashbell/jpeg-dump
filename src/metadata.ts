@@ -1,4 +1,3 @@
-import { error } from "console";
 import { extractApp0, TIFFParser } from "./extractors/metadata-extractors";
 import {
     ExifBaseTagModel,

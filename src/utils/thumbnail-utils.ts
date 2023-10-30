@@ -1,6 +1,4 @@
 import * as fs from "fs";
-import { readImageAsHex } from "./utils";
-import Jpeg from "../jpeg";
 
 function saveUint8ArrayAsFile(uint8Array: Uint8Array, filePath: string) {
     try {
