@@ -1,5 +1,5 @@
 export default class SOFTypeModel {
-    "marker": string;
+    "marker": string | null;
     "name": string;
     "details": string;
 }

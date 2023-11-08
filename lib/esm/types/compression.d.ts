@@ -2,8 +2,8 @@ import Frame from "./frame";
 import SegmentModel from "./models/Segment.model";
 import Quantization from "./quantization";
 export default class Compression {
-    private structure;
-    constructor(structure: SegmentModel);
+    private fileStructure;
+    constructor(fileStructure: SegmentModel[]);
     quantization: Quantization;
     frame: Frame;
 }

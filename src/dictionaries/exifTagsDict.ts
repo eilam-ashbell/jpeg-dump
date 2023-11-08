@@ -1,12 +1,12 @@
-import { ExifTagDictModel } from "../models/EXIF-tag.model";
+import { EXIFTagDictModel } from "../models/EXIF-tag.model";
 
 // Sources:
-// https://exiftool.org/TagNames/EXIF.html
+// https://EXIFtool.org/TagNames/EXIF.html
 // https://exiv2.org/tags.html
 
-const exifTagsDict: {
+const EXIFTagsDict: {
     // todo - handle duplicated tag ids (Interop | GPS) and redefine types
-    [group: string]: { [key: string]: ExifTagDictModel };
+    [group: string]: { [key: string]: EXIFTagDictModel };
 } = {
     main: {
         "0001": {
@@ -20,7 +20,7 @@ const exifTagsDict: {
                 THM: "THM - DCF thumbnail file",
             },
             description:
-                'Indicates the identification of the Interoperability rule. Use "R98" for stating ExifR98 Rules. Four bytes used including the termination code (NULL). see the separate volume of Recommended Exif Interoperability Rules (ExifR98) for other tags used for ExifR98.',
+                'Indicates the identification of the Interoperability rule. Use "R98" for stating EXIFR98 Rules. Four bytes used including the termination code (NULL). see the separate volume of Recommended EXIF Interoperability Rules (EXIFR98) for other tags used for EXIFR98.',
         },
         "0002": {
             tagId: "0002",
@@ -274,7 +274,7 @@ const exifTagsDict: {
             dataType: 2,
             values: null,
             description:
-                "A character string giving the title of the image. Two-bytes character codes cannot be used. When a 2-bytes code is necessary, the Exif Private tag <UserComment> is to be used.",
+                "A character string giving the title of the image. Two-bytes character codes cannot be used. When a 2-bytes code is necessary, the EXIF Private tag <UserComment> is to be used.",
         },
         "010f": {
             tagId: "010f",
@@ -1615,7 +1615,7 @@ const exifTagsDict: {
             dataType: 4,
             values: null,
             description:
-                "A pointer to the GPS Info IFD. The Interoperability structure of the GPS Info IFD, like that of Exif IFD, has no image data.",
+                "A pointer to the GPS Info IFD. The Interoperability structure of the GPS Info IFD, like that of EXIF IFD, has no image data.",
         },
         "935c": {
             tagId: "935c",
@@ -1672,7 +1672,7 @@ const exifTagsDict: {
             dataType: null,
             values: null,
             description:
-                "Interoperability IFD is composed of tags which stores the information to ensure the Interoperability and pointed by the following tag located in Exif IFD. The Interoperability structure of Interoperability IFD is the same as TIFF defined IFD structure but does not contain the image data characteristically compared with normal TIFF IFD.",
+                "Interoperability IFD is composed of tags which stores the information to ensure the Interoperability and pointed by the following tag located in EXIF IFD. The Interoperability structure of Interoperability IFD is the same as TIFF defined IFD structure but does not contain the image data characteristically compared with normal TIFF IFD.",
         },
         a010: {
             tagId: "a010",
@@ -2028,7 +2028,7 @@ const exifTagsDict: {
         c51b: {
             tagId: "c51b",
             ifd: "",
-            tagName: "HasselbladExif",
+            tagName: "HasselbladEXIF",
             dataType: null,
             values: null,
         },
@@ -2541,7 +2541,7 @@ const exifTagsDict: {
         },
         "829a": {
             tagId: "829a",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ExposureTime",
             dataType: 5,
             values: null,
@@ -2549,7 +2549,7 @@ const exifTagsDict: {
         },
         "829d": {
             tagId: "829d",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FNumber",
             dataType: 5,
             values: null,
@@ -2613,7 +2613,7 @@ const exifTagsDict: {
         },
         "8822": {
             tagId: "8822",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ExposureProgram",
             dataType: 3,
             values: {
@@ -2633,7 +2633,7 @@ const exifTagsDict: {
         },
         "8824": {
             tagId: "8824",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SpectralSensitivity",
             dataType: 2,
             values: null,
@@ -2642,7 +2642,7 @@ const exifTagsDict: {
         },
         "8827": {
             tagId: "8827",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ISO",
             dataType: 3,
             values: null,
@@ -2668,7 +2668,7 @@ const exifTagsDict: {
         },
         "882a": {
             tagId: "882a",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "TimeZoneOffset",
             dataType: 8,
             values: null,
@@ -2677,7 +2677,7 @@ const exifTagsDict: {
         },
         "882b": {
             tagId: "882b",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SelfTimerMode",
             dataType: 3,
             values: null,
@@ -2686,7 +2686,7 @@ const exifTagsDict: {
         },
         "8830": {
             tagId: "8830",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SensitivitydataType",
             dataType: 3,
             values: {
@@ -2704,7 +2704,7 @@ const exifTagsDict: {
         },
         "8831": {
             tagId: "8831",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "StandardOutputSensitivity",
             dataType: 4,
             values: null,
@@ -2713,7 +2713,7 @@ const exifTagsDict: {
         },
         "8832": {
             tagId: "8832",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "RecommendedExposureIndex",
             dataType: 4,
             values: null,
@@ -2722,7 +2722,7 @@ const exifTagsDict: {
         },
         "8833": {
             tagId: "8833",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ISOSpeed",
             dataType: 4,
             values: null,
@@ -2731,7 +2731,7 @@ const exifTagsDict: {
         },
         "8834": {
             tagId: "8834",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ISOSpeedLatitudeyyy",
             dataType: 4,
             values: null,
@@ -2740,7 +2740,7 @@ const exifTagsDict: {
         },
         "8835": {
             tagId: "8835",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ISOSpeedLatitudezzz",
             dataType: 4,
             values: null,
@@ -2749,8 +2749,8 @@ const exifTagsDict: {
         },
         "9000": {
             tagId: "9000",
-            ifd: "ExifIFD",
-            tagName: "ExifVersion",
+            ifd: "EXIFIFD",
+            tagName: "EXIFVersion",
             dataType: 7,
             values: null,
             description:
@@ -2758,7 +2758,7 @@ const exifTagsDict: {
         },
         "9003": {
             tagId: "9003",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "DateTimeOriginal",
             dataType: 2,
             values: null,
@@ -2767,7 +2767,7 @@ const exifTagsDict: {
         },
         "9004": {
             tagId: "9004",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "CreateDate",
             dataType: 2,
             values: null,
@@ -2776,14 +2776,14 @@ const exifTagsDict: {
         },
         "9009": {
             tagId: "9009",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "GooglePlusUploadCode",
             dataType: 7,
             values: null,
         },
         "9010": {
             tagId: "9010",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "OffsetTime",
             dataType: 2,
             values: null,
@@ -2792,7 +2792,7 @@ const exifTagsDict: {
         },
         "9011": {
             tagId: "9011",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "OffsetTimeOriginal",
             dataType: 2,
             values: null,
@@ -2801,7 +2801,7 @@ const exifTagsDict: {
         },
         "9012": {
             tagId: "9012",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "OffsetTimeDigitized",
             dataType: 2,
             values: null,
@@ -2810,7 +2810,7 @@ const exifTagsDict: {
         },
         "9101": {
             tagId: "9101",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ComponentsConfiguration",
             dataType: 7,
             values: {
@@ -2827,7 +2827,7 @@ const exifTagsDict: {
         },
         "9102": {
             tagId: "9102",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "CompressedBitsPerPixel",
             dataType: 5,
             values: null,
@@ -2836,7 +2836,7 @@ const exifTagsDict: {
         },
         "9201": {
             tagId: "9201",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ShutterSpeedValue",
             dataType: 10,
             values: null,
@@ -2845,7 +2845,7 @@ const exifTagsDict: {
         },
         "9202": {
             tagId: "9202",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ApertureValue",
             dataType: 5,
             values: null,
@@ -2853,7 +2853,7 @@ const exifTagsDict: {
         },
         "9203": {
             tagId: "9203",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "BrightnessValue",
             dataType: 10,
             values: null,
@@ -2862,7 +2862,7 @@ const exifTagsDict: {
         },
         "9204": {
             tagId: "9204",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ExposureCompensation",
             dataType: 10,
             values: null,
@@ -2871,7 +2871,7 @@ const exifTagsDict: {
         },
         "9205": {
             tagId: "9205",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "MaxApertureValue",
             dataType: 5,
             values: null,
@@ -2880,7 +2880,7 @@ const exifTagsDict: {
         },
         "9206": {
             tagId: "9206",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SubjectDistance",
             dataType: 5,
             values: null,
@@ -2888,7 +2888,7 @@ const exifTagsDict: {
         },
         "9207": {
             tagId: "9207",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "MeteringMode",
             dataType: 3,
             values: {
@@ -2905,7 +2905,7 @@ const exifTagsDict: {
         },
         "9208": {
             tagId: "9208",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "LightSource",
             dataType: 3,
             values: {
@@ -2936,7 +2936,7 @@ const exifTagsDict: {
         },
         "9209": {
             tagId: "9209",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Flash",
             dataType: 3,
             values: {
@@ -2973,7 +2973,7 @@ const exifTagsDict: {
         },
         "920a": {
             tagId: "920a",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FocalLength",
             dataType: 5,
             values: null,
@@ -3039,7 +3039,7 @@ const exifTagsDict: {
         },
         "9211": {
             tagId: "9211",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ImageNumber",
             dataType: 4,
             values: null,
@@ -3048,7 +3048,7 @@ const exifTagsDict: {
         },
         "9212": {
             tagId: "9212",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SecurityClassification",
             dataType: 2,
             values: {
@@ -3062,7 +3062,7 @@ const exifTagsDict: {
         },
         "9213": {
             tagId: "9213",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ImageHistory",
             dataType: 2,
             values: null,
@@ -3070,7 +3070,7 @@ const exifTagsDict: {
         },
         "9214": {
             tagId: "9214",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SubjectArea",
             dataType: 3,
             values: null,
@@ -3142,25 +3142,25 @@ const exifTagsDict: {
         },
         "927c": {
             tagId: "927c",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "MakerNote",
             dataType: 7,
             values: null,
             description:
-                "A tag for manufacturers of Exif writers to record any desired information. The contents are up to the manufacturer.",
+                "A tag for manufacturers of EXIF writers to record any desired information. The contents are up to the manufacturer.",
         },
         "9286": {
             tagId: "9286",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "UserComment",
             dataType: 7,
             values: null,
             description:
-                "Comment	A tag for Exif users to write keywords or comments on the image besides those in <ImageDescription>, and without the character code limitations of the <ImageDescription> tag.",
+                "Comment	A tag for EXIF users to write keywords or comments on the image besides those in <ImageDescription>, and without the character code limitations of the <ImageDescription> tag.",
         },
         "9290": {
             tagId: "9290",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SubSecTime",
             dataType: 2,
             values: null,
@@ -3169,7 +3169,7 @@ const exifTagsDict: {
         },
         "9291": {
             tagId: "9291",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SubSecTimeOriginal",
             dataType: 2,
             values: null,
@@ -3178,7 +3178,7 @@ const exifTagsDict: {
         },
         "9292": {
             tagId: "9292",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SubSecTimeDigitized",
             dataType: 2,
             values: null,
@@ -3208,7 +3208,7 @@ const exifTagsDict: {
         },
         "9400": {
             tagId: "9400",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "AmbientTemperature",
             dataType: 10,
             values: null,
@@ -3217,7 +3217,7 @@ const exifTagsDict: {
         },
         "9401": {
             tagId: "9401",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Humidity",
             dataType: 5,
             values: null,
@@ -3226,7 +3226,7 @@ const exifTagsDict: {
         },
         "9402": {
             tagId: "9402",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Pressure",
             dataType: 5,
             values: null,
@@ -3235,7 +3235,7 @@ const exifTagsDict: {
         },
         "9403": {
             tagId: "9403",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "WaterDepth",
             dataType: 10,
             values: null,
@@ -3244,7 +3244,7 @@ const exifTagsDict: {
         },
         "9404": {
             tagId: "9404",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Acceleration",
             dataType: 5,
             values: null,
@@ -3253,7 +3253,7 @@ const exifTagsDict: {
         },
         "9405": {
             tagId: "9405",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "CameraElevationAngle",
             dataType: 10,
             values: null,
@@ -3262,7 +3262,7 @@ const exifTagsDict: {
         },
         a000: {
             tagId: "a000",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FlashpixVersion",
             dataType: 7,
             values: null,
@@ -3271,7 +3271,7 @@ const exifTagsDict: {
         },
         a001: {
             tagId: "a001",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FlashpiColorSpacexVersion",
             dataType: 3,
             values: {
@@ -3286,8 +3286,8 @@ const exifTagsDict: {
         },
         a002: {
             tagId: "a002",
-            ifd: "ExifIFD",
-            tagName: "ExifImageWidth",
+            ifd: "EXIFIFD",
+            tagName: "EXIFImageWidth",
             dataType: 3,
             values: null,
             description:
@@ -3295,8 +3295,8 @@ const exifTagsDict: {
         },
         a003: {
             tagId: "a003",
-            ifd: "ExifIFD",
-            tagName: "ExifImageHeight",
+            ifd: "EXIFIFD",
+            tagName: "EXIFImageHeight",
             dataType: 3,
             values: null,
             description:
@@ -3304,16 +3304,16 @@ const exifTagsDict: {
         },
         a004: {
             tagId: "a004",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "RelatedSoundFile",
             dataType: 2,
             values: null,
             description:
-                "This tag is used to record the name of an audio file related to the image data. The only relational information recorded here is the Exif audio file name and extension (an ASCII string consisting of 8 characters + '.' + 3 characters). The path is not recorded.",
+                "This tag is used to record the name of an audio file related to the image data. The only relational information recorded here is the EXIF audio file name and extension (an ASCII string consisting of 8 characters + '.' + 3 characters). The path is not recorded.",
         },
         a20b: {
             tagId: "a20b",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FlashEnergy",
             dataType: 5,
             values: null,
@@ -3322,7 +3322,7 @@ const exifTagsDict: {
         },
         a20e: {
             tagId: "a20e",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FocalPlaneXResolution",
             dataType: 5,
             values: null,
@@ -3331,7 +3331,7 @@ const exifTagsDict: {
         },
         a20f: {
             tagId: "a20f",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FocalPlaneYResolution",
             dataType: 5,
             values: null,
@@ -3340,7 +3340,7 @@ const exifTagsDict: {
         },
         a210: {
             tagId: "a210",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FocalPlaneResolutionUnit",
             dataType: 3,
             values: {
@@ -3355,7 +3355,7 @@ const exifTagsDict: {
         },
         a214: {
             tagId: "a214",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SubjectLocation",
             dataType: 3,
             values: null,
@@ -3364,7 +3364,7 @@ const exifTagsDict: {
         },
         a215: {
             tagId: "a215",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ExposureIndex",
             dataType: 5,
             values: null,
@@ -3373,7 +3373,7 @@ const exifTagsDict: {
         },
         a217: {
             tagId: "a217",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SensingMethod",
             dataType: 3,
             values: {
@@ -3390,7 +3390,7 @@ const exifTagsDict: {
         },
         a300: {
             tagId: "a300",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FileSource",
             dataType: 7,
             values: {
@@ -3404,7 +3404,7 @@ const exifTagsDict: {
         },
         a301: {
             tagId: "a301",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ScenedataType",
             dataType: 7,
             values: {
@@ -3415,7 +3415,7 @@ const exifTagsDict: {
         },
         a302: {
             tagId: "a302",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "CFAPattern",
             dataType: 7,
             values: null,
@@ -3424,7 +3424,7 @@ const exifTagsDict: {
         },
         a401: {
             tagId: "a401",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "CustomRendered",
             dataType: 3,
             values: {
@@ -3442,7 +3442,7 @@ const exifTagsDict: {
         },
         a402: {
             tagId: "a402",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ExposureMode",
             dataType: 3,
             values: {
@@ -3455,7 +3455,7 @@ const exifTagsDict: {
         },
         a403: {
             tagId: "a403",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "WhiteBalance",
             dataType: 3,
             values: {
@@ -3467,7 +3467,7 @@ const exifTagsDict: {
         },
         a404: {
             tagId: "a404",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "DigitalZoomRatio",
             dataType: 5,
             values: null,
@@ -3476,7 +3476,7 @@ const exifTagsDict: {
         },
         a405: {
             tagId: "a405",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "FocalLengthIn35mmFormat",
             dataType: 3,
             values: null,
@@ -3485,7 +3485,7 @@ const exifTagsDict: {
         },
         a406: {
             tagId: "a406",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SceneCapturedataType",
             dataType: 3,
             values: {
@@ -3500,7 +3500,7 @@ const exifTagsDict: {
         },
         a407: {
             tagId: "a407",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "GainControl",
             dataType: 3,
             values: {
@@ -3515,7 +3515,7 @@ const exifTagsDict: {
         },
         a408: {
             tagId: "a408",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Contrast",
             dataType: 3,
             values: {
@@ -3528,7 +3528,7 @@ const exifTagsDict: {
         },
         a409: {
             tagId: "a409",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Saturation",
             dataType: 3,
             values: {
@@ -3541,7 +3541,7 @@ const exifTagsDict: {
         },
         a40a: {
             tagId: "a40a",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Sharpness",
             dataType: 3,
             values: {
@@ -3563,7 +3563,7 @@ const exifTagsDict: {
         },
         a40c: {
             tagId: "a40c",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SubjectDistanceRange",
             dataType: 3,
             values: {
@@ -3576,7 +3576,7 @@ const exifTagsDict: {
         },
         a420: {
             tagId: "a420",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ImageUniqueID",
             dataType: 2,
             values: null,
@@ -3585,7 +3585,7 @@ const exifTagsDict: {
         },
         a430: {
             tagId: "a430",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "OwnerName",
             dataType: 2,
             values: null,
@@ -3594,7 +3594,7 @@ const exifTagsDict: {
         },
         a431: {
             tagId: "a431",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SerialNumber",
             dataType: 2,
             values: null,
@@ -3603,7 +3603,7 @@ const exifTagsDict: {
         },
         a432: {
             tagId: "a432",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "LensInfo",
             dataType: 5,
             values: null,
@@ -3612,7 +3612,7 @@ const exifTagsDict: {
         },
         a433: {
             tagId: "a433",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "LensMake",
             dataType: 2,
             values: null,
@@ -3621,7 +3621,7 @@ const exifTagsDict: {
         },
         a434: {
             tagId: "a434",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "LensModel",
             dataType: 2,
             values: null,
@@ -3630,7 +3630,7 @@ const exifTagsDict: {
         },
         a435: {
             tagId: "a435",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "LensSerialNumber",
             dataType: 2,
             values: null,
@@ -3639,56 +3639,56 @@ const exifTagsDict: {
         },
         a436: {
             tagId: "a436",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Title",
             dataType: 2,
             values: null,
         },
         a437: {
             tagId: "a437",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Photographer",
             dataType: 2,
             values: null,
         },
         a438: {
             tagId: "a438",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ImageEditor",
             dataType: 2,
             values: null,
         },
         a439: {
             tagId: "a439",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "CameraFirmware",
             dataType: 2,
             values: null,
         },
         a43a: {
             tagId: "a43a",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "RAWDevelopingSoftware",
             dataType: 2,
             values: null,
         },
         a43b: {
             tagId: "a43b",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "ImageEditingSoftware",
             dataType: 2,
             values: null,
         },
         a43c: {
             tagId: "a43c",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "MetadataEditingSoftware",
             dataType: 2,
             values: null,
         },
         a460: {
             tagId: "a460",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "CompositeImage",
             dataType: 3,
             values: {
@@ -3702,7 +3702,7 @@ const exifTagsDict: {
         },
         a461: {
             tagId: "a461",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "CompositeImageCount",
             dataType: 3,
             values: null,
@@ -3711,7 +3711,7 @@ const exifTagsDict: {
         },
         a462: {
             tagId: "a462",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "CompositeImageExposureTimes",
             dataType: 7,
             values: null,
@@ -3720,7 +3720,7 @@ const exifTagsDict: {
         },
         a500: {
             tagId: "a500",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Gamma",
             dataType: 5,
             values: null,
@@ -4548,35 +4548,35 @@ const exifTagsDict: {
         },
         ea1c: {
             tagId: "ea1c",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Padding",
             dataType: 7,
             values: null,
         },
         ea1d: {
             tagId: "ea1d",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "OffsetSchema",
             dataType: 9,
             values: null,
         },
         fde8: {
             tagId: "fde8",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "OwnerName",
             dataType: 2,
             values: null,
         },
         fde9: {
             tagId: "fde9",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "SerialNumber",
             dataType: 2,
             values: null,
         },
         fdea: {
             tagId: "fdea",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Lens",
             dataType: 2,
             values: null,
@@ -4591,77 +4591,77 @@ const exifTagsDict: {
         },
         fe4c: {
             tagId: "fe4c",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "RawFile",
             dataType: 2,
             values: null,
         },
         fe4d: {
             tagId: "fe4d",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Converter",
             dataType: 2,
             values: null,
         },
         fe4e: {
             tagId: "fe4e",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "WhiteBalance",
             dataType: 2,
             values: null,
         },
         fe51: {
             tagId: "fe51",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Exposure",
             dataType: 2,
             values: null,
         },
         fe52: {
             tagId: "fe52",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Shadows",
             dataType: 2,
             values: null,
         },
         fe53: {
             tagId: "fe53",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Brightness",
             dataType: 2,
             values: null,
         },
         fe54: {
             tagId: "fe54",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Contrast",
             dataType: 2,
             values: null,
         },
         fe55: {
             tagId: "fe55",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Saturation",
             dataType: 2,
             values: null,
         },
         fe56: {
             tagId: "fe56",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Sharpness",
             dataType: 2,
             values: null,
         },
         fe57: {
             tagId: "fe57",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "Smoothness",
             dataType: 2,
             values: null,
         },
         fe58: {
             tagId: "fe58",
-            ifd: "ExifIFD",
+            ifd: "EXIFIFD",
             tagName: "MoireFilter",
             dataType: 2,
             values: null,
@@ -4669,11 +4669,11 @@ const exifTagsDict: {
         "8769": {
             tagId: "8769",
             ifd: "IFD0",
-            tagName: "ExifOffset",
+            tagName: "EXIFOffset",
             dataType: 4,
             values: null,
             description:
-                "A pointer to the Exif IFD. Interoperability, Exif IFD has the same structure as that of the IFD specified in TIFF. ordinarily, however, it does not contain image data as in the case of TIFF.",
+                "A pointer to the EXIF IFD. Interoperability, EXIF IFD has the same structure as that of the IFD specified in TIFF. ordinarily, however, it does not contain image data as in the case of TIFF.",
         },
     },
     GPS: {
@@ -4684,7 +4684,7 @@ const exifTagsDict: {
             dataType: 1,
             values: null,
             description:
-                "Indicates the version of <GPSInfoIFD>. The version is given as 2.0.0.0. This tag is mandatory when <GPSInfo> tag is present. (Note: The <GPSVersionID> tag is given in bytes, unlike the <ExifVersion> tag. When the version is 2.0.0.0, the tag value is 02000000.H).",
+                "Indicates the version of <GPSInfoIFD>. The version is given as 2.0.0.0. This tag is mandatory when <GPSInfo> tag is present. (Note: The <GPSVersionID> tag is given in bytes, unlike the <EXIFVersion> tag. When the version is 2.0.0.0, the tag value is 02000000.H).",
         },
 
         "0001": {
@@ -5057,4 +5057,4 @@ const exifTagsDict: {
     },
 };
 
-export default exifTagsDict;
+export default EXIFTagsDict;

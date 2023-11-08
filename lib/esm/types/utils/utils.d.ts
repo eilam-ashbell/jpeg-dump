@@ -11,4 +11,6 @@ declare function trimTrailingZeros(uint8Array: Uint8Array): Uint8Array;
 declare function keyExists(obj: {
     [key: string]: any;
 }, value: any): boolean;
-export { readImageAsHex, readJsonAsObj, createUniqueObjKey, formatHexZeros, hexStringToUint8Array, uint8ArrayToHexString, splitArrayIntoChunks, uint8ArrayToNumberLE, uint8ArrayToNumberBE, trimTrailingZeros, keyExists };
+declare function checkIfKnownMarker(marker: string): boolean;
+declare function checkIfFileExists(filePath: string): boolean;
+export { readImageAsHex, readJsonAsObj, createUniqueObjKey, formatHexZeros, hexStringToUint8Array, uint8ArrayToHexString, splitArrayIntoChunks, uint8ArrayToNumberLE, uint8ArrayToNumberBE, trimTrailingZeros, keyExists, checkIfKnownMarker, checkIfFileExists, };

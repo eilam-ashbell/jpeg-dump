@@ -1,12 +1,13 @@
-export declare class ExifBaseTagModel {
+export declare class EXIFBaseTagModel {
     "tagId": string;
     "dataType": string;
     "valueCount": number;
     "tagValue": string;
     "order": number;
-    "offset": number;
+    "localOffset": number;
+    "globalOffset": number;
 }
-export declare class ExifExtendedTagModel extends ExifBaseTagModel {
+export declare class EXIFExtendedTagModel extends EXIFBaseTagModel {
     "tagName": string;
     "tagDescription": string;
     "dataTypeAsInt": number;
@@ -18,9 +19,9 @@ export declare class ExifExtendedTagModel extends ExifBaseTagModel {
     "valuesDict": {
         [key: string]: string;
     } | null;
-    constructor(exifTag: ExifBaseTagModel, tagGroup: string);
+    constructor(EXIFTag: EXIFBaseTagModel, tagGroup: string);
 }
-export declare class ExifTagDictModel {
+export declare class EXIFTagDictModel {
     "tagId": string;
     "ifd": string;
     "tagName": string;
@@ -33,7 +34,7 @@ export declare class ExifTagDictModel {
 export interface ITIFFParser {
     'parsedTags': {
         [ifd: string]: {
-            [key: string]: ExifExtendedTagModel | ExifBaseTagModel;
+            [key: string]: EXIFExtendedTagModel | EXIFBaseTagModel;
         };
     };
     'thumb': Uint8Array;

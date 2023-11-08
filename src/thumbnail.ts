@@ -9,25 +9,28 @@ export default class Thumbnail {
     // private structure: SegmentModel;
     private jpeg: Jpeg | null = null;
     private thumbnail: Uint8Array | null = null;
-    constructor(thumbData: Uint8Array) {
+    constructor(thumbData: Uint8Array) {        
         // this.structure = structure;
-        if (thumbData) this.jpeg = new Jpeg(thumbData);
-
-        this.thumbnail = thumbData;
-        this.structure = this.jpeg?.structure;
-
-        this.metadata = this.jpeg?.metadata;
-
-        this.compression = this.jpeg?.compression;
+        if (thumbData.length > 0) {
+            this.jpeg = new Jpeg(thumbData);
+            this.thumbnail = thumbData;
+            this.structure = this.jpeg?.structure;
+            this.metadata = this.jpeg?.metadata;
+            this.compression = this.jpeg?.compression;
+        }
     }
 
-    public structure: Structure;
+    public structure!: Structure;
 
-    public metadata: Metadata;
+    public metadata!: Metadata;
 
-    public compression: Compression;
+    public compression!: Compression;
 
-    public save(path?: string): void {
-        saveUint8ArrayAsFile(this.thumbnail as Uint8Array, path || './thumbnail.jpg');
+    public save(path?: string): string {
+        saveUint8ArrayAsFile(
+            this.thumbnail as Uint8Array,
+            path || "./thumbnail.jpg"
+        );
+        return path || "./thumbnail.jpg";
     }
 }

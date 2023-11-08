@@ -1,21 +1,22 @@
-import { ExifBaseTagModel, ExifExtendedTagModel } from "./models/EXIF-tag.model";
+import { EXIFBaseTagModel, EXIFExtendedTagModel } from "./models/EXIF-tag.model";
 import SegmentModel from "./models/Segment.model";
 import Thumbnail from "./thumbnail";
 import { App0JFIFModel, App0JFXXModel } from "./models/app0.model";
 export default class Metadata {
-    private structureData;
-    constructor(structureData: SegmentModel);
+    private fileStructure;
+    private APP1;
+    constructor(fileStructure: SegmentModel[]);
     private thumbnailData;
-    private exifTags;
+    private EXIFTags;
     JFIF(): App0JFIFModel | App0JFXXModel;
     EXIF(): {
         [ifd: string]: {
-            [key: string]: ExifExtendedTagModel | ExifBaseTagModel;
+            [key: string]: EXIFExtendedTagModel | EXIFBaseTagModel;
         };
     };
     get IFDs(): string[];
     IFDTags(IFD: string): {
-        [key: string]: ExifBaseTagModel | ExifExtendedTagModel;
+        [key: string]: EXIFBaseTagModel | EXIFExtendedTagModel;
     };
-    thumbnail: Thumbnail;
+    thumbnail: Thumbnail | undefined;
 }

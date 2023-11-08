@@ -1,6 +1,7 @@
-export default class SofModel {
+export default class SOFModel {
     "marker": string;
-    "name": string;
+    "segmentName": string;
+    "globalOffset": number;
     "details": string;
     "length": number;
     "samplePrecision": number;

@@ -1,4 +1,4 @@
-export default class ExifIfdDataModel {
+export default class EXIFIfdDataModel {
     'ifdRawData': Uint8Array;
     'tagsCount': number;
     'tagsEndOffset': number;

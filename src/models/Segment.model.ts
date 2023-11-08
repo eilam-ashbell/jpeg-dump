@@ -1,10 +1,15 @@
 export default class SegmentModel {
-    [markerName: string]: {
-        marker: string | null;
-        offset: number;
-        length: number;
-        rawData?: Uint8Array | null;
-        nested?: SegmentModel;
-        data?: any;
-    };
+    segmentName: string;
+    marker: string | null;
+    globalOffset: number;
+    length: number;
+    rawData?: Uint8Array | null;
+    nested?: SegmentModel[];
+    data?: any;
+}
+
+export class SegmentTreeModel {
+    segmentName: string;
+    globalOffset: number;
+    nested?: Pick<SegmentTreeModel, "segmentName" | "globalOffset">[];
 }

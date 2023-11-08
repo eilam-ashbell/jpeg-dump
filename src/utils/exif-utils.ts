@@ -1,7 +1,7 @@
 import dataTypesDict from "../dictionaries/dataTypesDict";
-import { ExifBaseTagModel } from "../models/EXIF-tag.model";
+import { EXIFBaseTagModel } from "../models/EXIF-tag.model";
 import { IBytesOrder } from "../models/IBytesOrder";
-import ExifIfdDataModel from "../models/exif-ifd-data.model";
+import EXIFIfdDataModel from "../models/EXIF-ifd-data.model";
 import {
     splitArrayIntoChunks,
     trimTrailingZeros,
@@ -93,7 +93,7 @@ function extractFirstIFDOffset(
 
 function extractIFD(
     app1Segment: Uint8Array,
-    IFDOffset: number,
+    IFDOffset: number, // local offset
     bytesOrder: IBytesOrder = "4949"
 ) {
     // define bytes order reading
@@ -118,7 +118,7 @@ function extractIFD(
         IFDOffset,
         nextIFDOffset !== 0 ? nextIFDOffset : app1Segment.length
     );
-    return new ExifIfdDataModel(
+    return new EXIFIfdDataModel(
         IFDRawData,
         tagsCount,
         endOfTagsOffset - IFDOffset,
@@ -143,17 +143,19 @@ function splitUnit8ArrayToTags(unit8Array: Uint8Array): Uint8Array[] {
     return tags;
 }
 
-function ifdDataToTags(ifdData: ExifIfdDataModel): {
-    [key: string]: ExifBaseTagModel;
+function ifdDataToTags(ifdData: EXIFIfdDataModel, globalOffset:number): {
+    [key: string]: EXIFBaseTagModel;
 } {
     const tagsMarkers = ifdData.ifdRawData.slice(2, ifdData.tagsEndOffset);
     const tags = splitUnit8ArrayToTags(tagsMarkers);
     const tagsModel: { [key: string]: any } = {};
     let tagCount = 0;
     for (const tag of tags) {
-        const tagModel = unit8ArrayToExifTag(tag);
+    const localOffset = 2 + ifdData.offset + tagCount * 12; // offset from start of segment | 2 to skip number of tags | ifdData.offset from TIFF | tagCount * 12 to keep tracking by order
+        const tagModel = unit8ArrayToEXIFTag(tag);
         tagModel.order = tagCount;
-        tagModel.offset = 2 + ifdData.offset + tagCount * 12; // offset from start of segment | 2 to skip number of tags | ifdData.offset from TIFF | tagCount * 12 to keep tracking by order
+        tagModel.localOffset = localOffset
+        tagModel.globalOffset = localOffset + globalOffset;
         tagCount++;
         tagsModel[tagModel.tagId] = tagModel;
     }
@@ -161,29 +163,29 @@ function ifdDataToTags(ifdData: ExifIfdDataModel): {
     return tagsModel;
 }
 
-function unit8ArrayToExifTag(unit8Array: Uint8Array): ExifBaseTagModel {
+function unit8ArrayToEXIFTag(unit8Array: Uint8Array): EXIFBaseTagModel {
     if (unit8Array.length !== 12) {
         throw new Error(
             `Invalid unit8Array length. This array has ${unit8Array.length} bytes, and tag needs to be 12 bytes `
         );
     }
-    const exifTag = new ExifBaseTagModel();
-    (exifTag.tagId = ((unit8Array[1] << 8) | unit8Array[0])
+    const EXIFTag = new EXIFBaseTagModel();
+    (EXIFTag.tagId = ((unit8Array[1] << 8) | unit8Array[0])
         .toString(16)
         .padStart(4, "0")),
-        (exifTag.dataType = ((unit8Array[3] << 8) | unit8Array[2])
+        (EXIFTag.dataType = ((unit8Array[3] << 8) | unit8Array[2])
             .toString(16)
             .padStart(4, "0")),
-        (exifTag.valueCount =
+        (EXIFTag.valueCount =
             (unit8Array[7] << 24) |
             (unit8Array[6] << 16) |
             (unit8Array[5] << 8) |
             unit8Array[4]),
-        (exifTag.tagValue = Array.from(unit8Array.slice(-4).reverse(), (byte) =>
+        (EXIFTag.tagValue = Array.from(unit8Array.slice(-4).reverse(), (byte) =>
             byte.toString(16).padStart(2, "0")
         ).join(""));
-    exifTag.offset = 1;
-    return exifTag;
+    EXIFTag.localOffset = 1;
+    return EXIFTag;
 }
 
 function hexToReadable(
@@ -279,6 +281,6 @@ export {
     extractIFD,
     splitUnit8ArrayToTags,
     ifdDataToTags,
-    unit8ArrayToExifTag,
+    unit8ArrayToEXIFTag,
     hexToReadable,
 };

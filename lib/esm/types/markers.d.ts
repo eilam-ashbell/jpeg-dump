@@ -1,19 +1,10 @@
-import SegmentModel from "./models/Segment.model";
+import SegmentModel, { SegmentTreeModel } from "./models/Segment.model";
 export default class Markers {
-    private structureData;
-    constructor(segmentData: SegmentModel);
+    private fileStructure;
+    constructor(fileStructure: SegmentModel[]);
     get listMain(): string[];
     get listAll(): string[];
-    get listThumbnail(): string[];
-    get tree(): {
-        [key: string]: {
-            offset: number;
-            nested?: {
-                [key: string]: {
-                    offset: number;
-                };
-            };
-        };
-    };
+    get listThumbnail(): Array<string[]>;
+    get tree(): SegmentTreeModel[];
     get listMetadata(): string[];
 }

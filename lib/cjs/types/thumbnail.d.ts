@@ -8,5 +8,5 @@ export default class Thumbnail {
     structure: Structure;
     metadata: Metadata;
     compression: Compression;
-    save(path?: string): void;
+    save(path?: string): string;
 }

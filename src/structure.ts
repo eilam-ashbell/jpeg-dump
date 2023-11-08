@@ -2,31 +2,24 @@ import { parseSegments } from "./extractors/parseSegments";
 import Markers from "./markers";
 import SegmentModel from "./models/Segment.model";
 
-/**
- * Structure class will externalize information about the segments and markers of the image
- * constructor should get an image as an input
- *
- * @public dump - return all image data divided to its markers and segments
- * @public markers - enable to list image's markers data in multiple filters and structure
- */
 export default class Structure {
     private imageData: Uint8Array | null = null;
-    private structureData: SegmentModel | undefined;
+    private fileStructure: SegmentModel[] | undefined;
 
-    constructor(imageData: Uint8Array | SegmentModel | null) {
-        if (imageData instanceof Uint8Array) {
+    constructor(imageData: Uint8Array | SegmentModel[]) {
+        if (imageData instanceof Uint8Array) {            
             this.imageData = imageData;
-            this.structureData = parseSegments(imageData as Uint8Array);
-            this.markers = new Markers(this.structureData as SegmentModel);
+            this.fileStructure = parseSegments(imageData as Uint8Array);            
+            this.markers = new Markers(this.fileStructure as SegmentModel[]);
         } else {
-            this.structureData = imageData as SegmentModel;
-            this.markers = new Markers(this.structureData);
+            this.fileStructure = imageData as SegmentModel[];
+            this.markers = new Markers(this.fileStructure);
         }
     }
 
     // get file data separated to segments
-    get dump(): SegmentModel {
-        return this.structureData;
+    get dump(): SegmentModel[] | undefined{
+        return this.fileStructure;
     }
 
     // class for export only markers

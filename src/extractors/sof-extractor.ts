@@ -1,40 +1,35 @@
 import markersDict from "../dictionaries/markersDict";
 import SegmentModel from "../models/Segment.model";
-import SOFTypeModel from "../models/sof-type.model";
-import SofModel from "../models/sof.model";
+import SOFTypeModel from "../models/SOF-type.model";
+import SOFModel from "../models/SOF.model";
 
-function extractSof(sofSegment: Uint8Array): SofModel {
-    // Read the marker map
-    const markerMap = markersDict;
+function extractSOF(SOFSegment: SegmentModel): SOFModel {
+    const SOFRawData = SOFSegment.rawData as Uint8Array
     // parse segment data
-    const sofData = new SofModel();
-    sofData.marker = ((sofSegment[0] << 8) | sofSegment[1]).toString(16);
-    sofData.length = (sofSegment[2] << 8) | sofSegment[3];
-    sofData.samplePrecision = sofSegment[4];
-    sofData.linesNumber = (sofSegment[5] << 8) | sofSegment[6];
-    sofData.samplesPerLine = (sofSegment[7] << 8) | sofSegment[8];
-    sofData.componentsNumber = sofSegment[9];
-    sofData.componentId = sofSegment[10];
-    // from marker.json
-    sofData.name = markerMap[`0x${sofData.marker}`].name;
-    sofData.details = markerMap[`0x${sofData.marker}`].details;
-    return sofData;
+    const SOFData = new SOFModel();
+    SOFData.marker = ((SOFRawData[0] << 8) | SOFRawData[1]).toString(16);
+    SOFData.globalOffset = SOFSegment.globalOffset;
+    SOFData.length = (SOFRawData[2] << 8) | SOFRawData[3];
+    SOFData.samplePrecision = SOFRawData[4];
+    SOFData.linesNumber = (SOFRawData[5] << 8) | SOFRawData[6];
+    SOFData.samplesPerLine = (SOFRawData[7] << 8) | SOFRawData[8];
+    SOFData.componentsNumber = SOFRawData[9];
+    SOFData.componentId = SOFRawData[10];
+    SOFData.segmentName = markersDict[SOFData.marker].name;
+    SOFData.details = markersDict[SOFData.marker].details;
+    return SOFData;
 }
 
-function extractSOFType(structure: SegmentModel): SOFTypeModel {
-    // Read the marker map
-    const markerMap = markersDict;
+function extractSOFType(fileStructure: SegmentModel[]): SOFTypeModel {    
     // extract SOF in image
-    const SOF = Object.keys(structure).filter((k) => k.startsWith("SOF"))[0];
+    const SOF = fileStructure.filter((segment) => segment.segmentName.startsWith("SOF"))[0]
     // get SOF raw data
-    const SOFData = structure[SOF].rawData as Uint8Array;
-    // extract marker
-    const SOFmarker = ((SOFData[0] << 8) | SOFData[1]).toString(16);
+    const SOFData = SOF.rawData as Uint8Array;
     return {
-        marker: SOFmarker,
-        name: markersDict[`0x${SOFmarker}`].name,
-        details: markersDict[`0x${SOFmarker}`].details,
+        marker: SOF.marker,
+        name: SOF.segmentName,
+        details: markersDict[SOF.marker as string].details,
     };
 }
 
-export { extractSof, extractSOFType };
+export { extractSOF, extractSOFType };

@@ -1,7 +1,7 @@
-import { ExifTagDictModel } from "../models/EXIF-tag.model";
-declare const exifTagsDict: {
+import { EXIFTagDictModel } from "../models/EXIF-tag.model";
+declare const EXIFTagsDict: {
     [group: string]: {
-        [key: string]: ExifTagDictModel;
+        [key: string]: EXIFTagDictModel;
     };
 };
-export default exifTagsDict;
+export default EXIFTagsDict;

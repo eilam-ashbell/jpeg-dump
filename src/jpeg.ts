@@ -2,25 +2,15 @@ import fs from "fs";
 import Structure from "./structure";
 import Metadata from "./metadata";
 import Compression from "./compression";
+import { checkIfFileExists } from "./utils/utils";
 
-/**
- * Jpeg class will externalize every pice of data in a JPEG file
- * constructor should get an image as an input
- * @param input - File | string (path) | Unit8Array
- *
- * @public dump - return image data as Unit8Array
- * @public structure - get data about markers and segments of the image
- * @public metadata - get metadata of the image
- * @public compression - get data about compression process of the image
- */
 export default class Jpeg {
-    constructor(input: File | string | Uint8Array) {
+    constructor(input: string | Uint8Array) {
         if (typeof input === "string") {
+            // check if path to file is valid and the file exist
+            if (!checkIfFileExists(input)) throw new Error("File not found");
             // If input is a string (path), load the image from the provided path
-            this.loadImageFromPath(input);
-        } else if (input instanceof File) {
-            // If input is a File object, read the image data
-            this.readImageData(input);
+            this.loadImageFromPath(input);            
         } else if (typeof input === "object") {
             // If input is already Unit8Array, use it without any need to parse
             this.structure = new Structure(input);
@@ -35,8 +25,9 @@ export default class Jpeg {
         }
 
         if (this.imageData != null) {
+            
             this.structure = new Structure(this.imageData);
-            if (this.structure.dump) {
+            if (this.structure.dump) {                
                 this.metadata = new Metadata(this.structure.dump);
                 this.compression = new Compression(this.structure.dump);
             } else {
@@ -49,41 +40,22 @@ export default class Jpeg {
 
     private async loadImageFromPath(path: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            // Load the image file from the provided path
-            const imageFileData = fs.readFileSync(path);
-            // Convert the image buffer to a Uint8Array
-            const byteArray = new Uint8Array(imageFileData);
-            if (byteArray instanceof Uint8Array) {
-                this.imageData = byteArray;
-                resolve();
+            if (checkIfFileExists(path)) {
+                // Load the image file from the provided path
+                const imageFileData = fs.readFileSync(path);
+                
+                // Convert the image buffer to a Uint8Array
+                const byteArray = new Uint8Array(imageFileData);
+                if (byteArray instanceof Uint8Array) {
+                    
+                    this.imageData = byteArray;
+                    resolve();
+                } else {
+                    reject(new Error("Failed to load image from path"));
+                }
             } else {
                 reject(new Error("Failed to load image from path"));
             }
-        });
-    }
-
-    private async readImageData(image: File | string): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onload = (event) => {
-                if (
-                    event.target &&
-                    event.target.result instanceof ArrayBuffer
-                ) {
-                    // Convert the ArrayBuffer to a Uint8Array
-                    this.imageData = new Uint8Array(event.target.result);
-                    resolve();
-                } else {
-                    reject(new Error("Failed to read image data"));
-                }
-            };
-
-            reader.onerror = (event) => {
-                reject(new Error("Error reading image data"));
-            };
-
-            reader.readAsArrayBuffer(image as File);
         });
     }
 
@@ -91,7 +63,7 @@ export default class Jpeg {
         return this.imageData as Uint8Array;
     }
 
-    public structure: Structure;
-    public metadata: Metadata;
-    public compression: Compression;
+    public structure!: Structure;
+    public metadata!: Metadata;
+    public compression!: Compression;
 }

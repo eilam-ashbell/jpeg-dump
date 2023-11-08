@@ -1,5 +1,5 @@
 import Jpeg from "./jpeg";
-import { ExifExtendedTagModel } from "./models/EXIF-tag.model";
+import { EXIFExtendedTagModel } from "./models/EXIF-tag.model";
 
 const imageDump = () => {
     console.log(image.dump);
@@ -13,6 +13,9 @@ const imageCompressionFrameType = () => {
 const imageCompressionQTParse = () => {
     console.log(image.compression.quantization.parse());
 };
+const imageCompressionQTCount = () => {
+    console.log(image.compression.quantization.count);
+};
 const imageMetadataEXIF = () => {
     console.log(image.metadata.EXIF());
 };
@@ -20,42 +23,44 @@ const imageMetadataJFIF = () => {
     console.log(image.metadata.JFIF());
 };
 const imageMetadataThumbnailCompressionFrameParse = () => {
-    console.log(image.metadata.thumbnail.compression.frame.parse);
+    console.log(image.metadata.thumbnail?.compression.frame.parse);
 };
 const imageMetadataThumbnailCompressionFrameType = () => {
-    console.log(image.metadata.thumbnail.compression.frame.type);
+    console.log(image.metadata.thumbnail?.compression.frame.type);
 };
 const imageMetadataThumbnailCompressionQTParse = () => {
-    console.log(image.metadata.thumbnail.compression.quantization.parse());
+    // image.metadata.thumbnail?.compression.quantization.parse()
+    console.log(image.metadata.thumbnail?.compression.quantization.parse());
 };
 const imageMetadataThumbnailMetadataEXIF = () => {
-    console.log(image.metadata.thumbnail.metadata.EXIF());
+    console.log(image.metadata.thumbnail?.metadata.EXIF());
 };
 const imageMetadataThumbnailMetadataJFIF = () => {
-    console.log(image.metadata.thumbnail.metadata.JFIF());
+    console.log(image.metadata.thumbnail?.metadata.JFIF());
 };
 const imageMetadataThumbnailSave = () => {
-    console.log(image.metadata.thumbnail.save("./thumbnail.jpeg"));
+    console.log(image.metadata.thumbnail?.save("./thumbnail.jpeg"));
 };
 const imageMetadataThumbnailStructureDump = () => {
-    console.log(image.metadata.thumbnail.structure.dump);
+    console.log(image.metadata.thumbnail?.structure.dump);
 };
 const imageMetadataThumbnailStructureMarkersAll = () => {
-    console.log(image.metadata.thumbnail.structure.markers.listAll);
+    console.log(image.metadata.thumbnail?.structure.markers.listAll);
 };
 const imageMetadataThumbnailStructureMarkersMain = () => {
-    console.log(image.metadata.thumbnail.structure.markers.listMain);
+    console.log(image.metadata.thumbnail?.structure.markers.listMain);
 };
 const imageMetadataThumbnailStructureMarkersMetadata = () => {
-    console.log(image.metadata.thumbnail.structure.markers.listMetadata);
+    console.log(image.metadata.thumbnail?.structure.markers.listMetadata);
 };
 const imageMetadataThumbnailStructureMarkersThumbnail = () => {
-    console.log(image.metadata.thumbnail.structure.markers.listThumbnail);
+    console.log(image.metadata.thumbnail?.structure.markers.listThumbnail);
 };
 const imageMetadataThumbnailStructureMarkersTree = () => {
-    console.log(image.metadata.thumbnail.structure.markers.tree);
+    console.log(image.metadata.thumbnail?.structure.markers.tree);
 };
 const imageStructureDump = () => {
+    // image.structure.dump;
     console.log(image.structure.dump);
 };
 const imageStructureMarkersAll = () => {
@@ -80,7 +85,8 @@ const imageMetadataTags = (
         | "valueCount"
         | "tagValue"
         | "order"
-        | "offset"
+        | "localOffset"
+        | "globalOffset"
         | "tagDescription"
         | "dataTypeAsInt"
         | "dataTypeInBytes"
@@ -96,9 +102,9 @@ const imageMetadataTags = (
         Object.keys(markers).forEach((ifd) => {
             Object.keys(markers[ifd]).map((key2) => {
                 console.log(
-                    (markers[ifd][key2] as ExifExtendedTagModel).tagName +
+                    (markers[ifd][key2] as EXIFExtendedTagModel).tagName +
                         ": " +
-                        (markers[ifd][key2] as ExifExtendedTagModel)[value]
+                        (markers[ifd][key2] as EXIFExtendedTagModel)[value]
                 );
             });
         });
@@ -109,9 +115,9 @@ const imageMetadataTags = (
             const ifds = Object.keys(markers[ifd]);
             if (markers[ifd][tagID]) {
                 console.log(
-                    (markers[ifd][tagID] as ExifExtendedTagModel).tagName +
+                    (markers[ifd][tagID] as EXIFExtendedTagModel).tagName +
                         ": " +
-                        (markers[ifd][tagID] as ExifExtendedTagModel)[value]
+                        (markers[ifd][tagID] as EXIFExtendedTagModel)[value]
                 );
             }
         });
@@ -124,10 +130,9 @@ const imageMetadataIFDTags = (IFD: string) => {
     console.log(image.metadata.IFDTags(IFD));
 };
 
-// const imagePath = "./img/20230923_183639.jpg";
-// const imagePath = "./img/D20_img_instagram_0118.jpg";
-const imagePath = "./img/IMG_3391.JPG";
-// const imagePath = "./img/SamsungDigimaxS800.jpg";
+// const imagePath = "./img/reference_image.jpg";
+// const imagePath = "./img/IMG_3391.jpg";
+const imagePath = "./img/SamsungDigimaxS800.jpg";
 
 const start = new Date().getTime();
 const image = new Jpeg(imagePath);
@@ -136,6 +141,7 @@ const image = new Jpeg(imagePath);
 // imageCompressionFrameParse()
 // imageCompressionFrameType()
 // imageCompressionQTParse()
+// imageCompressionQTCount()
 // imageMetadataEXIF()
 // imageMetadataJFIF()
 // imageMetadataThumbnailCompressionFrameParse()
@@ -156,7 +162,7 @@ const image = new Jpeg(imagePath);
 // imageStructureMarkersMetadata()
 // imageStructureMarkersThumbnail()
 // imageStructureMarkersTree()
-imageMetadataTags('rawValue' , '927c')
+// imageMetadataTags('parsedValue' , '927c')
 // imageMetadataIFDsList();
 // imageMetadataIFDTags('IFD')
 

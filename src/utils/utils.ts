@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import markersDict from "../dictionaries/markersDict";
 
 async function readImageAsHex(filePath: string): Promise<Uint8Array> {
     try {
@@ -81,12 +82,15 @@ function uint8ArrayToHexString(uint8Array: Uint8Array): string {
     const hexArray: string[] = [];
     for (let i = 0; i < uint8Array?.length; i++) {
         const hexValue: string = uint8Array[i].toString(16).padStart(2, "0");
-        hexArray.push(hexValue);        
+        hexArray.push(hexValue);
     }
     return hexArray.join("");
 }
 
-function splitArrayIntoChunks(arr: any[] | Uint8Array, chunkSize: number): any[] {
+function splitArrayIntoChunks(
+    arr: any[] | Uint8Array,
+    chunkSize: number
+): any[] {
     const result: any[] = [];
     for (let i = 0; i < arr?.length; i += chunkSize) {
         result.push(arr.slice(i, i + chunkSize));
@@ -114,7 +118,7 @@ function uint8ArrayToNumberBE(uint8Array: Uint8Array): number {
 
 function trimTrailingZeros(uint8Array: Uint8Array): Uint8Array {
     let endIndex = uint8Array.length;
-    
+
     // Find the index of the first non-zero byte from the end
     for (let i = uint8Array.length - 1; i >= 0; i--) {
         if (uint8Array[i] !== 0) {
@@ -122,19 +126,31 @@ function trimTrailingZeros(uint8Array: Uint8Array): Uint8Array {
             break;
         }
     }
-    
+
     // Create a new Uint8Array with the trimmed data
     return uint8Array.slice(0, endIndex);
 }
 
 function keyExists(obj: { [key: string]: any }, value: any): boolean {
-    for (const key in obj) {                
-      if (key === value) {
-        return true;
-      }
+    for (const key in obj) {
+        if (key === value) {
+            return true;
+        }
     }
     return false;
-  }
+}
+
+function checkIfKnownMarker(marker: string): boolean {
+    return markersDict[marker] !== undefined;
+}
+
+function checkIfFileExists(filePath: string): boolean {
+    try {
+        return fs.existsSync(filePath) && fs.statSync(filePath).isFile();
+    } catch (err) {
+        throw new Error("Error while validating " + filePath);
+    }
+}
 
 export {
     readImageAsHex,
@@ -147,5 +163,7 @@ export {
     uint8ArrayToNumberLE,
     uint8ArrayToNumberBE,
     trimTrailingZeros,
-    keyExists
+    keyExists,
+    checkIfKnownMarker,
+    checkIfFileExists,
 };
