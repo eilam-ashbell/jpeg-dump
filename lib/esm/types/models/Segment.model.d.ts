@@ -5,7 +5,6 @@ export default class SegmentModel {
     length: number;
     rawData?: Uint8Array | null;
     nested?: SegmentModel[];
-    data?: any;
 }
 export declare class SegmentTreeModel {
     segmentName: string;

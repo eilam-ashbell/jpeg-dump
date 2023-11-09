@@ -1,7 +1,7 @@
 import dataTypesDict from "../dictionaries/dataTypesDict";
 import { EXIFBaseTagModel } from "../models/EXIF-tag.model";
 import { IBytesOrder } from "../models/IBytesOrder";
-import EXIFIfdDataModel from "../models/EXIF-ifd-data.model";
+import EXIFIfdDataModel from "../models/exif-ifd-data.model";
 import {
     splitArrayIntoChunks,
     trimTrailingZeros,

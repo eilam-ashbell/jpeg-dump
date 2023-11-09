@@ -1,7 +1,7 @@
 import markersDict from "../dictionaries/markersDict";
 import SegmentModel from "../models/Segment.model";
-import SOFTypeModel from "../models/SOF-type.model";
-import SOFModel from "../models/SOF.model";
+import SOFTypeModel from "../models/sof-type.model";
+import SOFModel from "../models/sof.model";
 
 function extractSOF(SOFSegment: SegmentModel): SOFModel {
     const SOFRawData = SOFSegment.rawData as Uint8Array
