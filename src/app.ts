@@ -11,7 +11,7 @@ const imageCompressionFrameType = () => {
     console.log(image.compression.frame.type);
 };
 const imageCompressionQTParse = () => {
-    console.log(image.compression.quantization.parse());
+    console.log(image.compression.quantization.parse()[0].quantizationTables[0]);
 };
 const imageCompressionQTCount = () => {
     console.log(image.compression.quantization.count);
@@ -130,9 +130,9 @@ const imageMetadataIFDTags = (IFD: string) => {
     console.log(image.metadata.IFDTags(IFD));
 };
 
-// const imagePath = "./img/reference_image.jpg";
+const imagePath = "./img/reference_image.jpg";
 // const imagePath = "./img/IMG_3391.jpg";
-const imagePath = "./img/SamsungDigimaxS800.jpg";
+// const imagePath = "./img/SamsungDigimaxS800.jpg";
 
 const start = new Date().getTime();
 const image = new Jpeg(imagePath);

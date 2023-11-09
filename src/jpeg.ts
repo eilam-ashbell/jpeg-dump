@@ -62,7 +62,7 @@ export default class Jpeg {
     get dump(): Uint8Array {
         return this.imageData as Uint8Array;
     }
-
+    // todo: add file data? file size and etc..
     public structure!: Structure;
     public metadata!: Metadata;
     public compression!: Compression;

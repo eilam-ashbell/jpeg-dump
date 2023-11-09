@@ -5,7 +5,7 @@ export default class SegmentModel {
     length: number;
     rawData?: Uint8Array | null;
     nested?: SegmentModel[];
-    data?: any;
+    // data?: any;
 }
 
 export class SegmentTreeModel {
