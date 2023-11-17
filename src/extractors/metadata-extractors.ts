@@ -61,111 +61,6 @@ function extractApp0(app0Segment: Uint8Array): App0JFIFModel | App0JFXXModel {
     }
 }
 
-// function extractEXIFTags(app1Segment: Uint8Array) {
-//     // Check if the APP1 marker is correct (0xFFE1)
-//     if (app1Segment[0] !== 0xff || app1Segment[1] !== 0xe1) {
-//         throw new Error("Invalid APP1 marker");
-//     }
-//     const tiffHeaderOffset = 10; // constant fo EXIF segment
-
-//     // extract first IFD offset
-//     const firstIFDOffset = extractFirstIFDOffset(app1Segment);
-
-//     // set first IFD offset
-//     let newOffset = firstIFDOffset;
-//     // const segmentTags: { [key: string]: EXIFBaseTagModel } = {};
-//     const segmentTags: { [ifd: string]: { [key: string]: EXIFBaseTagModel } } =
-//         {};
-
-//     // if the offset isn't 0 (last IFD mark) -> extract the IFD tags
-//     while (newOffset !== 0) {
-//         // console.log(newOffset);
-
-//         const IFDData = extractIFD(app1Segment, newOffset + tiffHeaderOffset);
-//         newOffset = IFDData.nextIFDOffset;
-//         const ifdTags = ifdDataToTags(IFDData, app1Segment.g);
-//         if (ifdTags["8769"]) {
-//             // console.log(app1Segment.slice((firstIFDOffset + 2 + 226)));
-//             // 28
-//             const EXIFSubIfdRaw = app1Segment.slice(
-//                 firstIFDOffset + 2 + 226,
-//                 firstIFDOffset + 2 + 226 + 12 * 28 + 4
-//             );
-//             const rawTags = extractIFD(app1Segment, firstIFDOffset + 2 + 226);
-//             // console.log(rawTags);
-
-//             const tags = ifdDataToTags(rawTags);
-//             // console.log(tags);
-//         }
-//         const ifdKey = createUniqueObjKey(segmentTags, "ifd");
-//         // Object.assign(segmentTags, { key: ifdTags });
-//         segmentTags[ifdKey] = ifdTags;
-
-//         // console.log(IFDData.offset + IFDData.tagsEndOffset + 4);
-//     }
-
-//     const parsedTagsSegment: {
-//         [ifd: string]: { [key: string]: EXIFExtendedTagModel };
-//     } = {};
-//     const ifdKeys = Object.keys(segmentTags);
-//     // loop each tag in every ifd entry
-//     for (let ifdKey of ifdKeys) {
-//         const tempIfd = {};
-//         // if it tag value is offset -> bring it from offset.
-//         for (let tag in segmentTags[ifdKey]) {
-//             const extendedTag = new EXIFExtendedTagModel(
-//                 segmentTags[ifdKey][tag],
-//                 "main"
-//             );
-//             if (extendedTag.isValueAtOffset) {
-//                 // slice the offset value
-//                 const startSliceData = parseInt(extendedTag.tagValue, 16) + 10;
-//                 const endSliceData =
-//                     parseInt(extendedTag.tagValue, 16) +
-//                     10 +
-//                     extendedTag.valueCount * extendedTag.dataTypeInBytes;
-
-//                 const tagRawData = app1Segment.slice(
-//                     startSliceData,
-//                     endSliceData
-//                 );
-//                 // convert it to hex string
-//                 let hexString = "";
-//                 for (let i = 0; i < tagRawData.length; i++) {
-//                     const hexByte = tagRawData[i].toString(16).padStart(2, "0");
-//                     hexString += hexByte;
-//                 }
-//                 // parse the new value
-//                 extendedTag.parsedValue = hexToReadable(
-//                     extendedTag.tagId,
-//                     extendedTag.dataTypeAsInt,
-//                     extendedTag.valueCount,
-//                     extendedTag.rawValue
-//                 );
-//             }
-//             // if there is a dict to value translation -> use it.
-//             if (extendedTag.valuesDict) {
-//                 // convert value to key
-//                 const key =
-//                     Number(extendedTag.tagValue) ||
-//                     formatHexZeros(extendedTag.tagValue);
-//                 // get value by key
-//                 extendedTag.parsedValue = extendedTag.valuesDict[key];
-//             }
-
-//             // assign tag to temp object
-//             Object.assign(tempIfd, {
-//                 [extendedTag.tagId]: extendedTag,
-//             });
-//         }
-//         // assign ifd to global object
-//         Object.assign(parsedTagsSegment, {
-//             [ifdKey]: tempIfd,
-//         });
-//     }
-//     return parsedTagsSegment;
-// }
-
 function tagExtender(
     tag: EXIFBaseTagModel,
     app1Segment: Uint8Array,
@@ -213,7 +108,7 @@ function tagExtender(
 }
 
 function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
-    const APP1RawData = app1Segment.rawData as Uint8Array
+    const APP1RawData = app1Segment.rawData as Uint8Array;
     // Check if the APP1 marker is correct (0xFFE1)
     if (APP1RawData[0] !== 0xff || APP1RawData[1] !== 0xe1) {
         throw new Error("Invalid APP1 marker");
@@ -227,7 +122,7 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
             [key: string]: EXIFExtendedTagModel | EXIFBaseTagModel;
         };
     } = {};
-    const thumb: {'data': Uint8Array} = {'data': new Uint8Array(0)};
+    const thumb: { data: Uint8Array } = { data: new Uint8Array(0) };
 
     while (nextIFDOffset) {
         // get IFD data
@@ -255,7 +150,10 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
                 tiffHeaderOffset + EXIFOffset
             ); // (tiffHeaderOffset + EXIFOffset) offset to EXIFSubIFD
 
-            const tagsInEXIF = ifdDataToTags(EXIFIFDData, app1Segment.globalOffset);
+            const tagsInEXIF = ifdDataToTags(
+                EXIFIFDData,
+                app1Segment.globalOffset
+            );
             // extend data of every tag in IFD
             for (const tag in tagsInEXIF) {
                 tagsInEXIF[tag] = tagExtender(
@@ -275,7 +173,10 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
                 tiffHeaderOffset + GPSOffset
             ); // (tiffHeaderOffset + EXIFOffset) offset to EXIFSubIFD
 
-            const tagsInGPS = ifdDataToTags(EXIFIFDData, app1Segment.globalOffset);
+            const tagsInGPS = ifdDataToTags(
+                EXIFIFDData,
+                app1Segment.globalOffset
+            );
             // extend data of every tag in IFD
             for (const tag in tagsInGPS) {
                 tagsInGPS[tag] = tagExtender(
@@ -290,13 +191,16 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
         if (tagsInIFD["83bb"]) {
             if (tagsInIFD["83bb"]) {
                 const IPTCOffset = parseInt(tagsInIFD["83bb"].tagValue, 16);
-    
+
                 const IPTCData = extractIFD(
                     APP1RawData,
                     tiffHeaderOffset + IPTCOffset
                 ); // (tiffHeaderOffset + IPTCOffset) offset to IPTC
-    
-                const tagsInIPTC = ifdDataToTags(IPTCData, app1Segment.globalOffset);
+
+                const tagsInIPTC = ifdDataToTags(
+                    IPTCData,
+                    app1Segment.globalOffset
+                );
                 // extend data of every tag in IFD
                 for (const tag in tagsInIPTC) {
                     tagsInIPTC[tag] = tagExtender(
@@ -313,13 +217,16 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
             if (tagsInIFD["8568"]) {
                 //
                 const IPTCOffset = parseInt(tagsInIFD["8568"].tagValue, 16);
-    
+
                 const IPTCData = extractIFD(
                     APP1RawData,
                     tiffHeaderOffset + IPTCOffset
                 ); // (tiffHeaderOffset + IPTCOffset) offset to IPTC
-    
-                const tagsInIPTC = ifdDataToTags(IPTCData, app1Segment.globalOffset);
+
+                const tagsInIPTC = ifdDataToTags(
+                    IPTCData,
+                    app1Segment.globalOffset
+                );
                 // extend data of every tag in IFD
                 for (const tag in tagsInIPTC) {
                     tagsInIPTC[tag] = tagExtender(
@@ -364,8 +271,7 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
         }
         // todo TAG_MAKERNOTE   = 0x927C
         if (tagsInIFD["927C"]) {
-            console.log('MakerNotes');
-            
+            console.log("MakerNotes");
         }
         // todo InteropOffset = 0xa005
         // todo TAG_USERCOMMENT = 0x928
@@ -379,7 +285,10 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
                 tiffHeaderOffset + subIFDOffset
             ); // (tiffHeaderOffset + subIFDOffset) offset to EXIFSubIFD
 
-            const tagsInSubIFD = ifdDataToTags(subIFDData, app1Segment.globalOffset);
+            const tagsInSubIFD = ifdDataToTags(
+                subIFDData,
+                app1Segment.globalOffset
+            );
             // extend data of every tag in IFD
             for (const tag in tagsInSubIFD) {
                 tagsInSubIFD[tag] = tagExtender(
@@ -400,7 +309,10 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
                 tiffHeaderOffset + subIFDOffset
             ); // (tiffHeaderOffset + subIFDOffset) offset to subIFDOffset
 
-            const tagsInSubIFD = ifdDataToTags(subIFDData, app1Segment.globalOffset);
+            const tagsInSubIFD = ifdDataToTags(
+                subIFDData,
+                app1Segment.globalOffset
+            );
             // extend data of every tag in IFD
             for (const tag in tagsInSubIFD) {
                 tagsInSubIFD[tag] = tagExtender(
@@ -414,14 +326,20 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
         }
         if (tagsInIFD["4748"]) {
             // Information found in the Microsoft custom EXIF tag 0x4748, as written by Windows Live Photo Gallery.
-            const microsoftStitchOffset = parseInt(tagsInIFD["4748"].tagValue, 16);
+            const microsoftStitchOffset = parseInt(
+                tagsInIFD["4748"].tagValue,
+                16
+            );
 
             const microsoftStitchData = extractIFD(
                 APP1RawData,
                 tiffHeaderOffset + microsoftStitchOffset
             ); // (tiffHeaderOffset + microsoftStitchOffset) offset to microsoftStitch
 
-            const tagsInMicrosoftStitch = ifdDataToTags(microsoftStitchData, app1Segment.globalOffset);
+            const tagsInMicrosoftStitch = ifdDataToTags(
+                microsoftStitchData,
+                app1Segment.globalOffset
+            );
             // extend data of every tag in IFD
             for (const tag in tagsInMicrosoftStitch) {
                 tagsInMicrosoftStitch[tag] = tagExtender(
@@ -442,7 +360,10 @@ function TIFFParser(app1Segment: SegmentModel): ITIFFParser {
                 tiffHeaderOffset + kodakIFDOffset
             ); // (tiffHeaderOffset + kodakIFDOffset) offset to KodakIFD
 
-            const tagsInKodakIFD = ifdDataToTags(kodakIFDData, app1Segment.globalOffset);
+            const tagsInKodakIFD = ifdDataToTags(
+                kodakIFDData,
+                app1Segment.globalOffset
+            );
             // extend data of every tag in IFD
             for (const tag in tagsInKodakIFD) {
                 tagsInKodakIFD[tag] = tagExtender(

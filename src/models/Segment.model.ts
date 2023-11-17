@@ -3,7 +3,7 @@ export default class SegmentModel {
     marker: string | null;
     globalOffset: number;
     length: number;
-    rawData?: Uint8Array | null;
+    rawData: Uint8Array;
     nested?: SegmentModel[];
     // data?: any;
 }

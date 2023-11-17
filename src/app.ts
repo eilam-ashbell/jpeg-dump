@@ -1,5 +1,6 @@
 import Jpeg from "./jpeg";
 import { EXIFExtendedTagModel } from "./models/EXIF-tag.model";
+import slice from "./slice";
 
 const imageDump = () => {
     console.log(image.dump);
@@ -130,7 +131,8 @@ const imageMetadataIFDTags = (IFD: string) => {
     console.log(image.metadata.IFDTags(IFD));
 };
 
-const imagePath = "./img/reference_image.jpg";
+// const imagePath = "./img/reference_image.jpg";
+const imagePath = "./img/test.jpg";
 // const imagePath = "./img/IMG_3391.jpg";
 // const imagePath = "./img/SamsungDigimaxS800.jpg";
 
@@ -165,6 +167,6 @@ const image = new Jpeg(imagePath);
 // imageMetadataTags('parsedValue' , '927c')
 // imageMetadataIFDsList();
 // imageMetadataIFDTags('IFD')
-
+slice(image.structure.dump)
 const end = new Date().getTime();
 console.log(`process duration: ${end-start}ms`);

@@ -11,6 +11,7 @@ export class EXIFBaseTagModel {
     "order": number;
     "localOffset": number;
     "globalOffset": number;
+    "tagRawValue": Uint8Array
 }
 
 export class EXIFExtendedTagModel extends EXIFBaseTagModel {
@@ -46,6 +47,7 @@ export class EXIFExtendedTagModel extends EXIFBaseTagModel {
         this.parsedValue = hexToReadable(this.tagId, this.dataTypeAsInt,  this.valueCount, this.rawValue);
         this.valuesDict = EXIFTagsDict[tagGroup][EXIFTag.tagId]?.values;
         this.tagDescription = EXIFTagsDict[tagGroup][EXIFTag.tagId]?.description || '';
+        this.tagRawValue = EXIFTag.tagRawValue;
     }
 }
 

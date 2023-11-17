@@ -184,7 +184,8 @@ function unit8ArrayToEXIFTag(unit8Array: Uint8Array): EXIFBaseTagModel {
         (EXIFTag.tagValue = Array.from(unit8Array.slice(-4).reverse(), (byte) =>
             byte.toString(16).padStart(2, "0")
         ).join(""));
-    EXIFTag.localOffset = 1;
+    EXIFTag.localOffset = 1;    
+    EXIFTag.tagRawValue = unit8Array;
     return EXIFTag;
 }
 

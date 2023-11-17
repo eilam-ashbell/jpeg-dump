@@ -4,7 +4,7 @@ import SegmentModel from "./models/Segment.model";
 
 export default class Structure {
     private imageData: Uint8Array | null = null;
-    private fileStructure: SegmentModel[] | undefined;
+    private fileStructure!: SegmentModel[];
 
     constructor(imageData: Uint8Array | SegmentModel[]) {
         if (imageData instanceof Uint8Array) {            
@@ -18,7 +18,7 @@ export default class Structure {
     }
 
     // get file data separated to segments
-    get dump(): SegmentModel[] | undefined{
+    get dump(): SegmentModel[] {
         return this.fileStructure;
     }
 

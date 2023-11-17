@@ -2,7 +2,7 @@ import SegmentModel from "../models/Segment.model";
 import { createUniqueObjKey, checkIfKnownMarker } from "../utils/utils";
 import markersDict from "../dictionaries/markersDict";
 
-function parseSegments(rawFileData: Uint8Array): SegmentModel[] | undefined {
+function parseSegments(rawFileData: Uint8Array): SegmentModel[] {
     try {
         const fileStructure: SegmentModel[] = [];
         let currentIndex = 0;
@@ -85,7 +85,7 @@ function parseSegments(rawFileData: Uint8Array): SegmentModel[] | undefined {
                 rawData: trailerData,
             });
         }
-        return fileStructure.length === 0 ? undefined : fileStructure;
+        return fileStructure;
     } catch (error) {
         throw new Error(`Error reading the image file: ${error}`);
     }
