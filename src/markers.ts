@@ -9,21 +9,21 @@ export default class Markers {
 
     // get a list of all main markers by their order on image
     get listMain(): string[] {
-        return this.fileStructure.map((segment) => segment.segmentName);
+        return this.fileStructure.map((segment) => segment.name);
     }
 
     // get a list of all markers by their order on image
     get listAll(): string[] {
         const mainMarkers: string[] = this.fileStructure.map(
-            (segment) => segment.segmentName
+            (segment) => segment.name
         );
         const markersList: string[] = [];
         for (let i = 0; i < mainMarkers.length; i++) {
             markersList.push(mainMarkers[i]);
             if (this.fileStructure[i].nested) {
                 this.fileStructure[i].nested?.map(
-                    (segment) => markersList.push(segment.segmentName)
-                    // console.log(segment.segmentName)
+                    (segment) => markersList.push(segment.name)
+                    // console.log(segment.name)
                 );
             }
         }
@@ -44,7 +44,7 @@ export default class Markers {
         for (let i = 0; i < nestedMarkers.length; i++) {
             if(nestedMarkers[i].nested){
                 const thumbMarkers: string[] = nestedMarkers[i].nested!.map(
-                    (segment) => (segment.segmentName)
+                    (segment) => (segment.name)
                     );
                     markersList.push(thumbMarkers);
                 }
@@ -62,23 +62,23 @@ export default class Markers {
                 const nestedMarkers: SegmentTreeModel[] = [];
                 nested.map((nestedSegment, j) =>
                     nestedMarkers.push({
-                        segmentName: (
+                        name: (
                             this.fileStructure[i].nested as SegmentModel[]
-                        )[j].segmentName,
+                        )[j].name,
                         globalOffset: (
                             this.fileStructure[i].nested as SegmentModel[]
                         )[j].globalOffset,
                     })
                 );
                 markers.push({
-                    segmentName: this.fileStructure[i].segmentName,
+                    name: this.fileStructure[i].name,
                     globalOffset: this.fileStructure[i].globalOffset,
                     nested: nestedMarkers,
                 });
             } else {
                 // if no nested segment, parse and mark segment offset
                 markers.push({
-                    segmentName: this.fileStructure[i].segmentName,
+                    name: this.fileStructure[i].name,
                     globalOffset: this.fileStructure[i].globalOffset,
                 });
             }
@@ -90,7 +90,7 @@ export default class Markers {
     get listMetadata(): string[] {
         const regexApps = /\bAPP/g;
         return this.fileStructure
-            .map((segment) => segment.segmentName)
+            .map((segment) => segment.name)
             .filter(
                 (marker) =>
                     marker.match(regexApps) ||

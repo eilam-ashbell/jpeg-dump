@@ -1,5 +1,5 @@
 export default class SegmentModel {
-    segmentName: string;
+    name: string;
     marker: string | null;
     globalOffset: number;
     length: number;
@@ -8,7 +8,7 @@ export default class SegmentModel {
     data?: any;
 }
 export declare class SegmentTreeModel {
-    segmentName: string;
+    name: string;
     globalOffset: number;
-    nested?: Pick<SegmentTreeModel, "segmentName" | "globalOffset">[];
+    nested?: Pick<SegmentTreeModel, "name" | "globalOffset">[];
 }

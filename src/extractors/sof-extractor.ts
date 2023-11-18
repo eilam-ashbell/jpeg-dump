@@ -15,19 +15,19 @@ function extractSOF(SOFSegment: SegmentModel): SOFModel {
     SOFData.samplesPerLine = (SOFRawData[7] << 8) | SOFRawData[8];
     SOFData.componentsNumber = SOFRawData[9];
     SOFData.componentId = SOFRawData[10];
-    SOFData.segmentName = markersDict[SOFData.marker].name;
+    SOFData.name = markersDict[SOFData.marker].name;
     SOFData.details = markersDict[SOFData.marker].details;
     return SOFData;
 }
 
 function extractSOFType(fileStructure: SegmentModel[]): SOFTypeModel {    
     // extract SOF in image
-    const SOF = fileStructure.filter((segment) => segment.segmentName.startsWith("SOF"))[0]
+    const SOF = fileStructure.filter((segment) => segment.name.startsWith("SOF"))[0]
     // get SOF raw data
     const SOFData = SOF.rawData as Uint8Array;
     return {
         marker: SOF.marker,
-        name: SOF.segmentName,
+        name: SOF.name,
         details: markersDict[SOF.marker as string].details,
     };
 }

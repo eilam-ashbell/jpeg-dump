@@ -1,7 +1,7 @@
 
 export default class SOFModel {
     "marker": string;
-    "segmentName": string;
+    "name": string;
     "globalOffset": number;
     "details": string;
     "length": number;

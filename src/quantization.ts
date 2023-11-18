@@ -1,8 +1,5 @@
-import { extractDqtSegment } from "./extractors/dqt-extractor";
 import DQTModel from "./models/dqt.model";
-import { Markers } from "./models/markers-dict.model";
 import SegmentModel from "./models/Segment.model";
-
 export default class Quantization {
     private fileStructure: SegmentModel[];
 
@@ -13,21 +10,26 @@ export default class Quantization {
     public parse(): DQTModel[] {
         // find all DQT markers in image
         const DQTMarkers = this.fileStructure.filter((segment) =>
-            segment.segmentName.startsWith("DQT")
-        );
-        let DQTsData: DQTModel[] = [];
+            segment.name.startsWith("DQT")
+        );        
+        let parsedDQTs: DQTModel[] = [];
         // for each DQT marker, extract its data and place in global object
-        for (let segment of DQTMarkers) {            
-            // const segment = this.fileStructure[DQTMarkers[marker]];
-            DQTsData.push(extractDqtSegment(
-                segment
-            ));
-        }        
-        return DQTsData;
+        for (let segment of DQTMarkers) {
+            // for each found DQT segment, create new DQT model
+            parsedDQTs.push(
+                new DQTModel(
+                    segment.rawData as Uint8Array,
+                    segment.globalOffset
+                )
+            );
+        }
+        return parsedDQTs;
     }
 
     // return the number of QT tables in the image
     get count(): number {
-        return this.parse().map(DQT => DQT.quantizationTables).flat().length
+        return this.parse()
+            .map((DQT) => DQT.QTs)
+            .flat().length;
     }
 }

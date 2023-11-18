@@ -14,7 +14,7 @@ export default class Metadata {
     constructor(fileStructure: SegmentModel[]) {
         this.fileStructure = fileStructure;
         this.APP1 = this.fileStructure.filter(
-            (segment) => segment.segmentName === "APP1"
+            (segment) => segment.name === "APP1"
         )[0];
         if (this.APP1) {
             this.EXIF();
@@ -29,7 +29,7 @@ export default class Metadata {
     };
     public JFIF(): App0JFIFModel | App0JFXXModel {
         const APP0 = this.fileStructure.filter(
-            (segment) => segment.segmentName === "APP0"
+            (segment) => segment.name === "APP0"
         )[0];
         if (!APP0) {
             throw new Error("no JFIF metadata found");

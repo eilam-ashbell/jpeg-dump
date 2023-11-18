@@ -16,7 +16,7 @@ export default class Frame {
 
     get parse(): SOFModel {
         const SOFRawSegment = this.fileStructure.filter(
-            (segment) => segment.segmentName === this.type.name
+            (segment) => segment.name === this.type.name
         )[0];
         return extractSOF(SOFRawSegment);
     }
