@@ -31,7 +31,7 @@ function parseSegments(rawFileData: Uint8Array): SegmentModel[] {
                             .includes(markerKey)
                     ) {
                         fileStructure.push({
-                            segmentName: markersDict[markerKey].name,
+                            name: markersDict[markerKey].name,
                             marker: markerKey,
                             globalOffset: markerStart,
                             length: 0,
@@ -53,7 +53,7 @@ function parseSegments(rawFileData: Uint8Array): SegmentModel[] {
                             )
                         );
                         fileStructure.push({
-                            segmentName: markersDict[markerKey].name,
+                            name: markersDict[markerKey].name,
                             marker: markerKey,
                             globalOffset: markerStart,
                             length: length,
@@ -73,12 +73,12 @@ function parseSegments(rawFileData: Uint8Array): SegmentModel[] {
         // search for trailer data
         const lastMarker = fileStructure[fileStructure.length - 1];
         if (
-            lastMarker?.segmentName === "EOI" &&
+            lastMarker?.name === "EOI" &&
             lastMarker.globalOffset + 2 !== rawFileData.length
         ) {
             const trailerData = rawFileData.slice(lastMarker.globalOffset + 2);
             fileStructure.push({
-                segmentName: "TRLR",
+                name: "TRLR",
                 marker: null,
                 globalOffset: lastMarker.globalOffset + 2,
                 length: trailerData.length,
@@ -92,3 +92,4 @@ function parseSegments(rawFileData: Uint8Array): SegmentModel[] {
 }
 
 export { parseSegments };
+

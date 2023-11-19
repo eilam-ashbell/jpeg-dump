@@ -60,6 +60,91 @@ The `structure` property will return an object with the following properties:
     - `segmentName` - a string representing the segment/marker conventional abbreviation name
     - `globalOffset` - a number representing the offset (in bytes) of the segment from the start of the JPEG file.
     - `nested` - an array of marker objects that are nested inside of the current segment.
+- `filter` method filters the `dump` method and returns only the segment you would like to see. This function can accept a string or an array of segments names as parameters.
+  - If string of segment name define, the function returns an array of all segments with the same name.
+
+    ```js
+    const SOI = myImage.structure.filter('SOI');
+    console.log(SOI);
+    // SOI: 
+    //    [{
+    //      name: 'SOI',
+    //      marker: 'ffd8',
+    //      length: 0,
+    //      globalOffset: 0,
+    //      rawData: [Uint8Array],
+    //      index: 0,
+    //      nested: []
+    //    }]
+    ```
+
+  - If an array will define, the function returns an object with entries of segment name and all segments that match the array of names.
+
+    ```js
+    const segments = myImage.structure.filter(['soi', 'eoi']);
+    console.log(segments);
+    // segments: 
+    //     {
+    //   SOI: [
+    //     SegmentModel {
+    //       name: 'SOI',
+    //       marker: 'ffd8',
+    //       length: 0,
+    //       globalOffset: 0,
+    //       rawData: [Uint8Array],
+    //       index: 0,
+    //       nested: []
+    //     }
+    //   ],
+    //   EOI: [
+    //     SegmentModel {
+    //       name: 'EOI',
+    //       marker: 'ffd9',
+    //       length: 0,
+    //       globalOffset: 1656596,
+    //       rawData: [Uint8Array],
+    //       index: 11,
+    //       nested: []
+    //     }
+    //   ]
+    // }
+    ```
+
+- `isExist` method returns a boolean result to indicate if a segment is exist in the image. This function can accept a string or an array of segments names as parameters.
+  
+    ```js
+    const SOI = myImage.structure.isExist('SOI');
+    console.log(SOI);
+    // SOI: true
+    ```
+
+    ```js
+    const segments = myImage.structure.isExist(['SOI', 'APP14']);
+    console.log(segments);
+    // {
+    //  SOI: true
+    //  APP14: false
+    // }
+    ```
+
+- `count` method returns a number result to indicate how many time a segment is exist in the image. This function can accept a string or an array of segments names as parameters.
+  
+    ```js
+    const SOI = myImage.structure.count('SOI');
+    console.log(SOI);
+    // SOI: 1
+    ```
+
+    ```js
+    const segments = myImage.structure.count(['DQT', 'APP14']);
+    console.log(segments);
+    // {
+    //  DQT: 2
+    //  APP14: 0
+    // }
+    ```
+
+note: `filter`, `isExist` and `count` methods are all works only on main file segments and not calculates nested segments.
 
 ### Metadata
 
@@ -123,6 +208,7 @@ The `compression` property will return two object to access compression data:
     ```typescript
     //  {
     //    precision: 8,
+    //    id: 0
     //    tableData: Uint16Array(64) [
     //    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3,
     //    3, 3, 3, 3, 3, 3, 3, 2, 2, 3, 2, 2,
@@ -160,21 +246,47 @@ The `compression` property will return two object to access compression data:
 
   ```typescript
     const myImage = new Jpeg('./my_image_path.jpg');
-    const parsedFrame = myImage.compression.frame.type
+    const parsedFrame = myImage.compression.frame.parse
     console.log(parsedFrame);
 
     //  {
-    //      marker: 'ffc0',
-    //      globalOffset: 51912,
-    //      length: 17,
-    //      samplePrecision: 8,
-    //      linesNumber: 1980,
-    //      samplesPerLine: 2640,
-    //      componentsNumber: 3,
-    //      componentId: 1,
-    //      segmentName: 'SOF0',
-    //      details: 'Baseline DCT'
+    //    name: 'SOF0',
+    //    marker: 'ffc0',
+    //    length: 17,
+    //    globalOffset: 22415,
+    //    rawData: Uint8Array(19) [
+    //      255, 192, 0, 17,  8, 6, 84,
+    //       11,  64, 3,  1, 34, 0,  2,
+    //       17,   1, 3, 17,  1
+    //    ],
+    //    index: 3,
+    //    nested: [],
+    //    samplePrecision: 8,
+    //    linesNumber: 1620,
+    //    samplesPerLine: 2880,
+    //    componentsNumber: 3,
+    //    componentId: 1,
+    //    details: 'Baseline DCT'
     //  }
+  ```
+
+- `DRI` - will return an array of the `DRI` segments in the file with all of their data.
+
+  ```typescript
+    const myImage = new Jpeg('./my_image_path.jpg');
+    const DRI = myImage.compression.DRI
+    console.log(DRI);
+    //  [{
+    //    name: 'DRI',
+    //    marker: 'ffdd',
+    //    length: 4,
+    //    globalOffset: 22988,
+    //    rawData: [ 255, 221, 0, 4, 17, 239 ],
+    //    index: 6,
+    //    nested: [],
+    //    details: '',
+    //    rstInterval: 4591
+    //   }]
   ```
 
 ## Todo
@@ -191,4 +303,3 @@ The `compression` property will return two object to access compression data:
   - [ ] IPTC
   - [ ] XMP
 - [ ] Add tests
-

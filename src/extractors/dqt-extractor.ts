@@ -1,7 +1,7 @@
 import SegmentModel from "../models/Segment.model";
-import DQTModel, { IDQT } from "../models/dqt.model";
+import DQTModel, { DQTData } from "../models/dqt.model";
 
-function extractDqtSegment(dqtSegment: SegmentModel): DQTModel {
+function extractDqtSegment(dqtSegment: SegmentModel): DQTData[] {
     // console.log(dqtSegment.globalOffset);
     
     // extract segment raw data
@@ -14,7 +14,7 @@ function extractDqtSegment(dqtSegment: SegmentModel): DQTModel {
     const segmentLength = (DQTRawData[2] << 8) | DQTRawData[3];
     const segmentData = DQTRawData.subarray(4, segmentLength + 2);
 
-    const quantizationTables: IDQT[] = [];
+    const quantizationTables: DQTData[] = [];
 
     let offset = 0;
 
@@ -41,13 +41,14 @@ function extractDqtSegment(dqtSegment: SegmentModel): DQTModel {
 
         quantizationTables.push({
             precision: qtPrecision === 0 ? 8 : 16,
+            id: qtId,
             tableData: qtData,
             localOffset: localOffset,
             globalOffset: globalOffset
         });
     }
 
-    return new DQTModel("ffdb", dqtSegment.segmentName, dqtSegment.globalOffset, segmentLength, quantizationTables);
+    return quantizationTables
 }
 
 export { extractDqtSegment };

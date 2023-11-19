@@ -1,4 +1,4 @@
-export declare class App0JFIFModel {
+export declare class APP0JFIFModel {
     'identifier': string;
     'version': string;
     'units': number;
@@ -7,7 +7,7 @@ export declare class App0JFIFModel {
     'thumbnailWidth': number;
     'thumbnailHeight': number;
 }
-export declare class App0JFXXModel {
+export declare class APP0JFXXModel {
     'identifier': string;
     'thumbnailFormat': number;
     'thumbnailData': any;

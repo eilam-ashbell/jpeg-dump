@@ -1,4 +1,4 @@
-export default class App1EXIFModel {
+export default class APP1EXIFModel {
     'identifier': string;
     'TIFF': {
         order: 'Little endian' | 'Big endian';

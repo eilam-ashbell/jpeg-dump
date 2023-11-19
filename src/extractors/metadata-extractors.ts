@@ -9,11 +9,11 @@ import {
     EXIFExtendedTagModel,
     ITIFFParser,
 } from "../models/EXIF-tag.model";
-import { App0JFIFModel, App0JFXXModel } from "../models/app0.model";
+import { APP0JFIFModel, APP0JFXXModel } from "../models/app0.model";
 import { createUniqueObjKey } from "../utils/utils";
 import SegmentModel from "../models/Segment.model";
 
-function extractApp0(app0Segment: Uint8Array): App0JFIFModel | App0JFXXModel {
+function extractApp0(app0Segment: Uint8Array): APP0JFIFModel | APP0JFXXModel {
     // Check if the APP0 marker is correct (0xFFE0)
     if (app0Segment[0] !== 0xff || app0Segment[1] !== 0xe0) {
         throw new Error("Invalid APP0 marker");
@@ -38,7 +38,7 @@ function extractApp0(app0Segment: Uint8Array): App0JFIFModel | App0JFXXModel {
         const thumbHeight = app0Segment[17];
 
         // Construct and return an object with the parsed data
-        const JFIFData: App0JFIFModel = {
+        const JFIFData: APP0JFIFModel = {
             identifier: identifier,
             version: `${versionMajor}.${versionMinor}`,
             units: units,
@@ -52,7 +52,7 @@ function extractApp0(app0Segment: Uint8Array): App0JFIFModel | App0JFXXModel {
         const thumbnailFormat = app0Segment[9];
         const thumbnailData = app0Segment.slice(10); // Extract the thumbnail image data
 
-        const JFXXData: App0JFXXModel = {
+        const JFXXData: APP0JFXXModel = {
             identifier: identifier,
             thumbnailFormat: thumbnailFormat,
             thumbnailData: thumbnailData,

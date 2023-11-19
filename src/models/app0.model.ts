@@ -1,5 +1,5 @@
 
-export class App0JFIFModel {
+export class APP0JFIFModel {
     'identifier': string;
     'version': string;
     'units': number;
@@ -9,7 +9,7 @@ export class App0JFIFModel {
     'thumbnailHeight': number;
 }
 
-export class App0JFXXModel {
+export class APP0JFXXModel {
     'identifier': string;
     'thumbnailFormat': number;
     'thumbnailData': any;

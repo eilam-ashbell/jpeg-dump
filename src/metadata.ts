@@ -5,7 +5,7 @@ import {
 } from "./models/EXIF-tag.model";
 import SegmentModel from "./models/Segment.model";
 import Thumbnail from "./thumbnail";
-import { App0JFIFModel, App0JFXXModel } from "./models/app0.model";
+import { APP0JFIFModel, APP0JFXXModel } from "./models/app0.model";
 
 export default class Metadata {
     private fileStructure: SegmentModel[];
@@ -14,7 +14,7 @@ export default class Metadata {
     constructor(fileStructure: SegmentModel[]) {
         this.fileStructure = fileStructure;
         this.APP1 = this.fileStructure.filter(
-            (segment) => segment.segmentName === "APP1"
+            (segment) => segment.name === "APP1"
         )[0];
         if (this.APP1) {
             this.EXIF();
@@ -27,9 +27,9 @@ export default class Metadata {
             [key: string]: EXIFExtendedTagModel | EXIFBaseTagModel;
         };
     };
-    public JFIF(): App0JFIFModel | App0JFXXModel {
+    public JFIF(): APP0JFIFModel | APP0JFXXModel {
         const APP0 = this.fileStructure.filter(
-            (segment) => segment.segmentName === "APP0"
+            (segment) => segment.name === "APP0"
         )[0];
         if (!APP0) {
             throw new Error("no JFIF metadata found");

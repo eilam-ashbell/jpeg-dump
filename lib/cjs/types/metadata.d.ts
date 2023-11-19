@@ -1,14 +1,14 @@
 import { EXIFBaseTagModel, EXIFExtendedTagModel } from "./models/EXIF-tag.model";
 import SegmentModel from "./models/Segment.model";
 import Thumbnail from "./thumbnail";
-import { App0JFIFModel, App0JFXXModel } from "./models/app0.model";
+import { APP0JFIFModel, APP0JFXXModel } from "./models/app0.model";
 export default class Metadata {
     private fileStructure;
     private APP1;
     constructor(fileStructure: SegmentModel[]);
     private thumbnailData;
     private EXIFTags;
-    JFIF(): App0JFIFModel | App0JFXXModel;
+    JFIF(): APP0JFIFModel | APP0JFXXModel;
     EXIF(): {
         [ifd: string]: {
             [key: string]: EXIFExtendedTagModel | EXIFBaseTagModel;

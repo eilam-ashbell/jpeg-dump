@@ -1,7 +1,7 @@
 import { extractSOFType, extractSOF } from "./extractors/sof-extractor";
+import SOFModel from "./models/SOF.model";
 import SegmentModel from "./models/Segment.model";
 import SOFTypeModel from "./models/sof-type.model";
-import SOFModel from "./models/sof.model";
 
 export default class Frame {
     private fileStructure: SegmentModel[];
@@ -16,7 +16,7 @@ export default class Frame {
 
     get parse(): SOFModel {
         const SOFRawSegment = this.fileStructure.filter(
-            (segment) => segment.segmentName === this.type.name
+            (segment) => segment.name === this.type.name
         )[0];
         return extractSOF(SOFRawSegment);
     }

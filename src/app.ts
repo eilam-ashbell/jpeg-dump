@@ -1,6 +1,7 @@
 import Jpeg from "./jpeg";
 import { EXIFExtendedTagModel } from "./models/EXIF-tag.model";
-import slice from "./slice";
+import SegmentModel from "./models/Segment.model";
+import { MarkersNames } from "./models/markers-dict.model";
 
 const imageDump = () => {
     console.log(image.dump);
@@ -12,10 +13,13 @@ const imageCompressionFrameType = () => {
     console.log(image.compression.frame.type);
 };
 const imageCompressionQTParse = () => {
-    console.log(image.compression.quantization.parse()[0].quantizationTables[0]);
+    console.log(image.compression.quantization.parse());
 };
 const imageCompressionQTCount = () => {
     console.log(image.compression.quantization.count);
+};
+const imageCompressionRestarts = () => {
+    console.log(image.compression.DRI);
 };
 const imageMetadataEXIF = () => {
     console.log(image.metadata.EXIF());
@@ -61,8 +65,16 @@ const imageMetadataThumbnailStructureMarkersTree = () => {
     console.log(image.metadata.thumbnail?.structure.markers.tree);
 };
 const imageStructureDump = () => {
-    // image.structure.dump;
     console.log(image.structure.dump);
+};
+const imageStructureIsExist = (segmentName: MarkersNames | MarkersNames[]) => {
+    console.log(image.structure.isExist(segmentName));
+};
+const imageStructureCount = (segmentName: MarkersNames | MarkersNames[]) => {
+    console.log(image.structure.count(segmentName));
+};
+const imageStructureFilter = (segmentName: MarkersNames | MarkersNames[]) => {
+    console.log(image.structure.filter(segmentName));
 };
 const imageStructureMarkersAll = () => {
     console.log(image.structure.markers.listAll);
@@ -133,6 +145,7 @@ const imageMetadataIFDTags = (IFD: string) => {
 
 // const imagePath = "./img/reference_image.jpg";
 const imagePath = "./img/test.jpg";
+// const imagePath = "./img/test.jpg";
 // const imagePath = "./img/IMG_3391.jpg";
 // const imagePath = "./img/SamsungDigimaxS800.jpg";
 
@@ -142,8 +155,9 @@ const image = new Jpeg(imagePath);
 // imageDump()
 // imageCompressionFrameParse()
 // imageCompressionFrameType()
-// imageCompressionQTParse()
+imageCompressionQTParse()
 // imageCompressionQTCount()
+// imageCompressionRestarts()
 // imageMetadataEXIF()
 // imageMetadataJFIF()
 // imageMetadataThumbnailCompressionFrameParse()
@@ -159,6 +173,9 @@ const image = new Jpeg(imagePath);
 // imageMetadataThumbnailStructureMarkersThumbnail()
 // imageMetadataThumbnailStructureMarkersTree()
 // imageStructureDump()
+// imageStructureIsExist(['EOI', 'APP1', 'APP14'])
+// imageStructureCount(['EOI', 'SOS', 'APP1', 'APP14'])
+// imageStructureFilter(['soi', 'eoi'])
 // imageStructureMarkersAll()
 // imageStructureMarkersMain()
 // imageStructureMarkersMetadata()
@@ -167,6 +184,6 @@ const image = new Jpeg(imagePath);
 // imageMetadataTags('parsedValue' , '927c')
 // imageMetadataIFDsList();
 // imageMetadataIFDTags('IFD')
-slice(image.structure.dump)
+
 const end = new Date().getTime();
 console.log(`process duration: ${end-start}ms`);
