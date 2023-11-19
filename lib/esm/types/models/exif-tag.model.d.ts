@@ -6,6 +6,7 @@ export declare class EXIFBaseTagModel {
     "order": number;
     "localOffset": number;
     "globalOffset": number;
+    "tagRawValue": Uint8Array;
 }
 export declare class EXIFExtendedTagModel extends EXIFBaseTagModel {
     "tagName": string;

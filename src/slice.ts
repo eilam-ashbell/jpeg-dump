@@ -7,8 +7,8 @@ export default function slice(fileStructure: SegmentModel[]): SliceModel[] {
     const slices: SliceModel[] = [];
 
     fileStructure.map((segment) => {
-        if (segment.segmentName === "APP0") {
-        } else if (segment.segmentName === "APP1") {
+        if (segment.name === "APP0") {
+        } else if (segment.name === "APP1") {
             const nested: SliceModel[] = [];
             const EXIF = TIFFParser(segment);
             for (let IFD in EXIF.parsedTags) {
@@ -35,7 +35,7 @@ export default function slice(fileStructure: SegmentModel[]): SliceModel[] {
         } else
             slices.push(
                 new SliceModel(
-                    [segment.segmentName],
+                    [segment.name],
                     segment.globalOffset,
                     // segment.length,
                     segment.rawData

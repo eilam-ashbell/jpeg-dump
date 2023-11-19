@@ -1,4 +1,4 @@
-import DQTModel from "./models/dqt.model";
+import DQTModel from "./models/DQT.model";
 import SegmentModel from "./models/Segment.model";
 export default class Quantization {
     private fileStructure;

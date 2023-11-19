@@ -1,8 +1,11 @@
+import markersDict from "../dictionaries/markersDict";
 export default class MarkersDictModel {
-    [marker: string]: {
-        length: boolean;
-        name: string;
-        details: string;
-    };
+    [marker: string]: Marker;
 }
-export type Markers = MarkersDictModel[keyof MarkersDictModel]['name'];
+export declare class Marker {
+    name: string;
+    marker: string;
+    length: boolean;
+    details: string;
+}
+export type MarkersNames = typeof markersDict[keyof typeof markersDict]["name"];

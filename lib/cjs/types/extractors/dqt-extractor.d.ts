@@ -1,4 +1,4 @@
 import SegmentModel from "../models/Segment.model";
-import DQTModel from "../models/dqt.model";
-declare function extractDqtSegment(dqtSegment: SegmentModel): DQTModel;
+import { DQTData } from "../models/DQT.model";
+declare function extractDqtSegment(dqtSegment: SegmentModel): DQTData[];
 export { extractDqtSegment };

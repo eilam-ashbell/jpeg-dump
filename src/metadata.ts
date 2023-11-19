@@ -5,7 +5,7 @@ import {
 } from "./models/EXIF-tag.model";
 import SegmentModel from "./models/Segment.model";
 import Thumbnail from "./thumbnail";
-import { APP0JFIFModel, APP0JFXXModel } from "./models/app0.model";
+import { APP0JFIFModel, APP0JFXXModel } from "./models/APP0.model";
 
 export default class Metadata {
     private fileStructure: SegmentModel[];

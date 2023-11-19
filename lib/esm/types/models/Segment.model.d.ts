@@ -3,8 +3,10 @@ export default class SegmentModel {
     marker: string | null;
     globalOffset: number;
     length: number;
-    rawData?: Uint8Array | null;
+    rawData: Uint8Array;
     nested?: SegmentModel[];
+    index: number;
+    constructor(rawData: Uint8Array, globalOffset: number, index: number);
 }
 export declare class SegmentTreeModel {
     name: string;

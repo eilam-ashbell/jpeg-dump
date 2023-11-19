@@ -1,5 +1,5 @@
 import SegmentModel from "../models/Segment.model";
-import DQTModel, { DQTData } from "../models/dqt.model";
+import { DQTData } from "../models/DQT.model";
 
 function extractDqtSegment(dqtSegment: SegmentModel): DQTData[] {
     // console.log(dqtSegment.globalOffset);

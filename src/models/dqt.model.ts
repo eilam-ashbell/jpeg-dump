@@ -1,4 +1,3 @@
-import { type } from "os";
 import SegmentModel from "./Segment.model";
 import markersDict from "../dictionaries/markersDict";
 import { MarkersNames } from "./markers-dict.model";
